@@ -49,15 +49,22 @@ export default function LoginScreen() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Logo with Animated Neon Glow */}
+          {/* Logo with Glow Effect */}
           <View style={styles.logoContainer}>
             <View style={styles.logoWrapper}>
-              {/* Glow layer behind the logo */}
-              <Animated.Image
+              {/* Glow layer - blurred image behind */}
+              <Image
                 source={{ uri: GAMLY_LOGO }}
-                style={[styles.logoGlow, animatedGlowStyle]}
+                style={styles.logoGlow}
                 resizeMode="contain"
-                blurRadius={15}
+                blurRadius={20}
+              />
+              {/* Second glow layer for more intensity */}
+              <Image
+                source={{ uri: GAMLY_LOGO }}
+                style={styles.logoGlow2}
+                resizeMode="contain"
+                blurRadius={35}
               />
               {/* Main logo */}
               <Image

@@ -330,6 +330,38 @@ export default function OnboardingScreen() {
       case 5:
         return (
           <View style={styles.stepContent}>
+            <Text style={styles.stepTitle}>Langues parlées</Text>
+            <Text style={styles.stepSubtitle}>Sélectionne les langues que tu parles ({languages.length} sélectionnée{languages.length > 1 ? 's' : ''})</Text>
+            
+            <View style={styles.languageOptions}>
+              {LANGUAGES.map((lang) => (
+                <TouchableOpacity
+                  key={lang.id}
+                  style={[
+                    styles.languageCard,
+                    languages.includes(lang.id) && styles.languageCardActive,
+                  ]}
+                  onPress={() => toggleLanguage(lang.id)}
+                >
+                  <Text style={styles.languageFlag}>{lang.flag}</Text>
+                  <Text style={[
+                    styles.languageLabel,
+                    languages.includes(lang.id) && styles.languageLabelActive,
+                  ]}>{lang.label}</Text>
+                  {languages.includes(lang.id) && (
+                    <View style={styles.languageCheck}>
+                      <Ionicons name="checkmark" size={16} color="white" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        );
+
+      case 6:
+        return (
+          <View style={styles.stepContent}>
             <Text style={styles.stepTitle}>Que recherches-tu?</Text>
             <Text style={styles.stepSubtitle}>Quel type de gamer veux-tu rencontrer?</Text>
             

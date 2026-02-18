@@ -31,7 +31,7 @@ export default function SubscriptionScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [isIAPAvailable, setIsIAPAvailable] = useState(false);
-  const [products, setProducts] = useState<InAppPurchases.IAPItemDetails[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     initializeIAP();
@@ -39,20 +39,28 @@ export default function SubscriptionScreen() {
     
     return () => {
       // Cleanup IAP listener
-      InAppPurchases.disconnectAsync().catch(() => {});
+      if (InAppPurchases && Platform.OS !== 'web') {
+        InAppPurchases.disconnectAsync().catch(() => {});
+      }
     };
   }, []);
 
   const initializeIAP = async () => {
+    // Skip IAP on web
+    if (Platform.OS === 'web' || !InAppPurchases) {
+      setIsIAPAvailable(false);
+      return;
+    }
+
     try {
       // Connect to the store
       await InAppPurchases.connectAsync();
       setIsIAPAvailable(true);
 
       // Set up purchase listener
-      InAppPurchases.setPurchaseListener(({ responseCode, results, errorCode }) => {
+      InAppPurchases.setPurchaseListener(({ responseCode, results, errorCode }: any) => {
         if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-          results?.forEach(async (purchase) => {
+          results?.forEach(async (purchase: any) => {
             if (!purchase.acknowledged) {
               // Verify and acknowledge the purchase
               await handlePurchaseComplete(purchase);
@@ -73,7 +81,7 @@ export default function SubscriptionScreen() {
         setProducts(results);
       }
     } catch (error) {
-      console.log('IAP not available (web or simulator):', error);
+      console.log('IAP not available:', error);
       setIsIAPAvailable(false);
     }
   };

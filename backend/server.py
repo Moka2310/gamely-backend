@@ -73,6 +73,7 @@ class UserProfile(BaseModel):
     looking_for: Optional[str] = None  # ami_occasionnel, ami_team, ami_regulier
     photo: Optional[str] = None  # base64
     bio: Optional[str] = None
+    languages: Optional[List[str]] = []  # français, anglais, espagnol, italien, mandarin, arabe
 
 class UserResponse(BaseModel):
     id: str
@@ -88,6 +89,7 @@ class UserResponse(BaseModel):
     looking_for: Optional[str] = None
     photo: Optional[str] = None
     bio: Optional[str] = None
+    languages: List[str] = []
     created_at: datetime
     profile_complete: bool = False
 

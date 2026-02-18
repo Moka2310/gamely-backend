@@ -119,15 +119,18 @@ backend:
 
   - task: "User Login API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "Implemented JWT login with bcrypt password verification"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Login API working correctly. Returns JWT token and user object. Properly validates credentials and rejects invalid logins with 401 status."
 
   - task: "Profile Update API"
     implemented: true

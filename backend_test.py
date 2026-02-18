@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from frontend/.env
-BASE_URL = "https://gamerswipe-1.preview.emergentagent.com/api"
+BASE_URL = "https://gamermatch-5.preview.emergentagent.com/api"
 
 class GamerSwipeAPITester:
     def __init__(self):

@@ -12,7 +12,7 @@ index 0000000..9869df9
 +import requests
 +import json
 +
-+BASE_URL = "https://gamerswipe-1.preview.emergentagent.com/api"
++BASE_URL = "https://gamermatch-5.preview.emergentagent.com/api"
 +
 +def test_block_functionality():
 +    print("🚫 Testing Block User Functionality")
@@ -136,7 +136,7 @@ index 0000000..122ded8
 +import requests
 +import json
 +
-+BASE_URL = "https://gamerswipe-1.preview.emergentagent.com/api"
++BASE_URL = "https://gamermatch-5.preview.emergentagent.com/api"
 +
 +def test_edge_cases():
 +    print("🔍 Testing Edge Cases and Error Scenarios")

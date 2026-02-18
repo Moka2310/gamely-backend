@@ -8,11 +8,13 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
+  Modal,
+  FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SPACING, CONSOLES, LOOKING_FOR_OPTIONS, POPULAR_GAMES, POPULAR_INTERESTS, COUNTRIES } from '../src/constants/theme';
+import { COLORS, SPACING, CONSOLES, LOOKING_FOR_OPTIONS, POPULAR_GAMES, POPULAR_INTERESTS, ALL_COUNTRIES, LANGUAGES } from '../src/constants/theme';
 import { useAuthStore } from '../src/stores/authStore';
 import { profileAPI } from '../src/services/api';
 
@@ -27,8 +29,17 @@ export default function EditProfileScreen() {
   const [console_, setConsole] = useState(user?.console || '');
   const [games, setGames] = useState<string[]>(user?.games || []);
   const [interests, setInterests] = useState<string[]>(user?.interests || []);
+  const [languages, setLanguages] = useState<string[]>(user?.languages || []);
   const [lookingFor, setLookingFor] = useState(user?.looking_for || '');
   const [bio, setBio] = useState(user?.bio || '');
+
+  // Country modal state
+  const [showCountryModal, setShowCountryModal] = useState(false);
+  const [countrySearch, setCountrySearch] = useState('');
+
+  const filteredCountries = ALL_COUNTRIES.filter(c =>
+    c.toLowerCase().includes(countrySearch.toLowerCase())
+  );
 
   const toggleGame = (game: string) => {
     setGames(prev =>
@@ -43,6 +54,14 @@ export default function EditProfileScreen() {
       prev.includes(interest)
         ? prev.filter(i => i !== interest)
         : [...prev, interest]
+    );
+  };
+
+  const toggleLanguage = (lang: string) => {
+    setLanguages(prev =>
+      prev.includes(lang)
+        ? prev.filter(l => l !== lang)
+        : [...prev, lang]
     );
   };
 
@@ -62,6 +81,7 @@ export default function EditProfileScreen() {
         console: console_,
         games,
         interests,
+        languages,
         looking_for: lookingFor,
         bio: bio.trim(),
       };
@@ -77,6 +97,24 @@ export default function EditProfileScreen() {
       setIsLoading(false);
     }
   };
+
+  const renderCountryItem = ({ item }: { item: string }) => (
+    <TouchableOpacity
+      style={[styles.countryItem, country === item && styles.countryItemActive]}
+      onPress={() => {
+        setCountry(item);
+        setShowCountryModal(false);
+        setCountrySearch('');
+      }}
+    >
+      <Text style={[styles.countryItemText, country === item && styles.countryItemTextActive]}>
+        {item}
+      </Text>
+      {country === item && (
+        <Ionicons name="checkmark" size={20} color={COLORS.primary} />
+      )}
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -141,22 +179,37 @@ export default function EditProfileScreen() {
           </View>
         </View>
 
-        {/* Country */}
+        {/* Country - Dropdown */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Pays</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.horizontalOptions}>
-              {COUNTRIES.map((c) => (
-                <TouchableOpacity
-                  key={c}
-                  style={[styles.chip, country === c && styles.chipActive]}
-                  onPress={() => setCountry(c)}
-                >
-                  <Text style={[styles.chipText, country === c && styles.chipTextActive]}>{c}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => setShowCountryModal(true)}
+          >
+            <Ionicons name="globe-outline" size={20} color={COLORS.textMuted} />
+            <Text style={[styles.dropdownText, country && styles.dropdownTextSelected]}>
+              {country || 'Sélectionner un pays'}
+            </Text>
+            <Ionicons name="chevron-down" size={20} color={COLORS.textMuted} />
+          </TouchableOpacity>
+        </View>
+
+        {/* Languages */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Langues parlées</Text>
+          <View style={styles.chipsContainer}>
+            {LANGUAGES.map((lang) => (
+              <TouchableOpacity
+                key={lang}
+                style={[styles.chip, languages.includes(lang) && styles.chipActive]}
+                onPress={() => toggleLanguage(lang)}
+              >
+                <Text style={[styles.chipText, languages.includes(lang) && styles.chipTextActive]}>
+                  {lang}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
         {/* Console */}
@@ -249,6 +302,54 @@ export default function EditProfileScreen() {
 
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* Country Selection Modal */}
+      <Modal
+        visible={showCountryModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowCountryModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Sélectionner un pays</Text>
+              <TouchableOpacity onPress={() => {
+                setShowCountryModal(false);
+                setCountrySearch('');
+              }}>
+                <Ionicons name="close" size={24} color={COLORS.text} />
+              </TouchableOpacity>
+            </View>
+            
+            {/* Search input */}
+            <View style={styles.searchContainer}>
+              <Ionicons name="search" size={20} color={COLORS.textMuted} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Rechercher un pays..."
+                placeholderTextColor={COLORS.textMuted}
+                value={countrySearch}
+                onChangeText={setCountrySearch}
+                autoFocus
+              />
+              {countrySearch.length > 0 && (
+                <TouchableOpacity onPress={() => setCountrySearch('')}>
+                  <Ionicons name="close-circle" size={20} color={COLORS.textMuted} />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <FlatList
+              data={filteredCountries}
+              keyExtractor={(item) => item}
+              renderItem={renderCountryItem}
+              showsVerticalScrollIndicator={false}
+              style={styles.countryList}
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -337,10 +438,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  horizontalOptions: {
+  dropdownButton: {
     flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.card,
+    padding: SPACING.md,
+    borderRadius: 12,
     gap: SPACING.sm,
-    paddingRight: SPACING.lg,
+  },
+  dropdownText: {
+    flex: 1,
+    color: COLORS.textMuted,
+    fontSize: 16,
+  },
+  dropdownTextSelected: {
+    color: COLORS.text,
   },
   chipsContainer: {
     flexDirection: 'row',
@@ -404,5 +516,71 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: 40,
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: COLORS.card,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '80%',
+    paddingBottom: SPACING.xl,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: SPACING.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.text,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.background,
+    margin: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    borderRadius: 12,
+    gap: SPACING.sm,
+  },
+  searchInput: {
+    flex: 1,
+    paddingVertical: SPACING.md,
+    color: COLORS.text,
+    fontSize: 16,
+  },
+  countryList: {
+    paddingHorizontal: SPACING.md,
+  },
+  countryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  countryItemActive: {
+    backgroundColor: COLORS.primary + '20',
+    borderRadius: 8,
+    marginVertical: 2,
+  },
+  countryItemText: {
+    fontSize: 16,
+    color: COLORS.text,
+  },
+  countryItemTextActive: {
+    color: COLORS.primary,
+    fontWeight: '600',
   },
 });

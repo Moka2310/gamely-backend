@@ -77,3 +77,18 @@ export const COUNTRIES = [
   'Brésil', 'Mexique', 'Argentine', 'Japon', 'Corée du Sud',
   'Australie', 'Pays-Bas', 'Maroc', 'Algérie', 'Tunisie',
 ];
+
+export const LANGUAGES = [
+  { id: 'français', label: 'Français', flag: '🇫🇷' },
+  { id: 'anglais', label: 'Anglais', flag: '🇬🇧' },
+  { id: 'espagnol', label: 'Espagnol', flag: '🇪🇸' },
+  { id: 'italien', label: 'Italien', flag: '🇮🇹' },
+  { id: 'mandarin', label: 'Mandarin', flag: '🇨🇳' },
+  { id: 'arabe', label: 'Arabe', flag: '🇸🇦' },
+];
+
+export const GENDERS = [
+  { id: 'homme', label: 'Homme' },
+  { id: 'femme', label: 'Femme' },
+  { id: 'autre', label: 'Autre' },
+];

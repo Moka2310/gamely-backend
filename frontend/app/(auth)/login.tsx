@@ -87,13 +87,19 @@ export default function LoginScreen() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Logo */}
+          {/* Logo with Animated Neon Glow */}
           <View style={styles.logoContainer}>
-            <Image
-              source={{ uri: GAMLY_LOGO }}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
+            <View style={styles.logoWrapper}>
+              {/* Animated neon glow layers */}
+              <Animated.View style={[styles.neonGlowOuter, animatedGlowStyle]} />
+              <Animated.View style={[styles.neonGlowMiddle, animatedGlowStyle]} />
+              <Animated.View style={[styles.neonGlowInner, animatedGlowStyle]} />
+              <Image
+                source={{ uri: GAMLY_LOGO }}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+            </View>
             <View style={styles.neonContainer}>
               <Text style={styles.tagline}>Trouve ton partenaire de jeu</Text>
             </View>

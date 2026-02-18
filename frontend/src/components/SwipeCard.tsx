@@ -87,6 +87,18 @@ export default function SwipeCard({ profile }: SwipeCardProps) {
             <Text style={styles.infoValue}>{getLookingForLabel(profile.looking_for)}</Text>
           </View>
         )}
+
+        {/* Languages */}
+        {profile.languages && profile.languages.length > 0 && (
+          <View style={styles.languagesRow}>
+            <Ionicons name="chatbubble-outline" size={14} color={COLORS.textMuted} />
+            <Text style={styles.languagesText}>
+              {profile.languages.map(l => getLanguageInfo(l)?.flag || '').join(' ')}
+              {' '}
+              {profile.languages.map(l => getLanguageInfo(l)?.label || l).join(', ')}
+            </Text>
+          </View>
+        )}
         
         {/* Common interests indicator */}
         {profile.common_count && profile.common_count > 0 && (

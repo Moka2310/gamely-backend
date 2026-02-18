@@ -353,6 +353,8 @@ async def update_profile(profile: UserProfile, current_user: dict = Depends(get_
         update_data["games"] = profile.games
     if profile.interests is not None:
         update_data["interests"] = profile.interests
+    if profile.languages is not None:
+        update_data["languages"] = profile.languages
     if profile.looking_for is not None:
         update_data["looking_for"] = profile.looking_for
     if profile.photo is not None:
@@ -379,6 +381,7 @@ async def update_profile(profile: UserProfile, current_user: dict = Depends(get_
         "console": updated_user.get("console"),
         "games": updated_user.get("games", []),
         "interests": updated_user.get("interests", []),
+        "languages": updated_user.get("languages", []),
         "looking_for": updated_user.get("looking_for"),
         "photo": updated_user.get("photo"),
         "bio": updated_user.get("bio"),
@@ -388,8 +391,13 @@ async def update_profile(profile: UserProfile, current_user: dict = Depends(get_
 # ===================== DISCOVER / SWIPE ENDPOINTS =====================
 
 @api_router.get("/discover")
-async def discover_profiles(current_user: dict = Depends(get_current_user)):
-    """Get profiles to swipe on"""
+async def discover_profiles(
+    current_user: dict = Depends(get_current_user),
+    gender: Optional[str] = None,
+    country: Optional[str] = None,
+    language: Optional[str] = None
+):
+    """Get profiles to swipe on with optional filters"""
     user_id = current_user["_id"]
     
     # Get users already swiped

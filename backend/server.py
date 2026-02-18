@@ -234,6 +234,72 @@ async def login(user_data: UserLogin):
         }
     }
 
+# ===================== PASSWORD RESET ENDPOINTS =====================
+
+# Store reset codes in memory (in production, use Redis or database)
+reset_codes = {}
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(data: PasswordResetRequest):
+    """Request password reset - generates a code"""
+    user = await db.users.find_one({"email": data.email})
+    if not user:
+        # Don't reveal if email exists or not for security
+        return {"message": "Si cet email existe, un code de réinitialisation a été généré."}
+    
+    # Generate 6-digit code
+    import random
+    code = str(random.randint(100000, 999999))
+    
+    # Store code with expiration (10 minutes)
+    reset_codes[data.email] = {
+        "code": code,
+        "expires": datetime.utcnow() + timedelta(minutes=10)
+    }
+    
+    # In production, send email here
+    # For demo, we'll return the code (remove in production!)
+    logger.info(f"Password reset code for {data.email}: {code}")
+    
+    return {
+        "message": "Code de réinitialisation généré.",
+        "demo_code": code  # Remove this in production!
+    }
+
+@api_router.post("/auth/reset-password")
+async def reset_password(data: PasswordResetConfirm):
+    """Reset password with code"""
+    # Check if code exists and is valid
+    reset_data = reset_codes.get(data.email)
+    if not reset_data:
+        raise HTTPException(status_code=400, detail="Aucun code de réinitialisation trouvé")
+    
+    if datetime.utcnow() > reset_data["expires"]:
+        del reset_codes[data.email]
+        raise HTTPException(status_code=400, detail="Code expiré")
+    
+    if reset_data["code"] != data.reset_code:
+        raise HTTPException(status_code=400, detail="Code incorrect")
+    
+    # Validate new password
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Le mot de passe doit contenir au moins 6 caractères")
+    
+    # Update password
+    user = await db.users.find_one({"email": data.email})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    
+    await db.users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"password_hash": hash_password(data.new_password)}}
+    )
+    
+    # Remove used code
+    del reset_codes[data.email]
+    
+    return {"message": "Mot de passe mis à jour avec succès!"}
+
 @api_router.get("/auth/me")
 async def get_me(current_user: dict = Depends(get_current_user)):
     return {

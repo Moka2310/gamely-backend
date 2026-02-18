@@ -217,6 +217,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  forgotPassword: {
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+  },
+  forgotPasswordText: {
+    color: COLORS.textSecondary,
+    fontSize: 14,
+  },
   registerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

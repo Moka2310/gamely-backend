@@ -497,6 +497,21 @@ async def swipe(swipe_data: SwipeCreate, current_user: dict = Depends(get_curren
             "action": "like"
         })
         
+        # AUTO-MATCH FOR DEMO: If the swiped user is a demo profile, auto-like back
+        demo_emails = ["sarah.gamer@example.com", "alex.pro@example.com", "luna.pcmaster@example.com"]
+        swiped_user = await db.users.find_one({"_id": ObjectId(swipe_data.swiped_user_id)})
+        
+        if swiped_user and swiped_user.get("email") in demo_emails and not other_swipe:
+            # Create automatic like from demo profile
+            auto_swipe_doc = {
+                "swiper_id": swipe_data.swiped_user_id,
+                "swiped_user_id": user_id,
+                "action": "like",
+                "timestamp": datetime.utcnow()
+            }
+            await db.swipes.insert_one(auto_swipe_doc)
+            other_swipe = auto_swipe_doc  # Now there's a match!
+        
         if other_swipe:
             is_match = True
             # Create match

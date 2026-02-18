@@ -1,33 +1,48 @@
 export const COLORS = {
-  // Primary colors (Tinder-like gradient)
-  primary: '#FF6B6B',
-  primaryDark: '#EE5A5A',
-  secondary: '#FF8E53',
+  // Primary colors (Blue & Pink gradient)
+  primary: '#FF1493',      // Deep Pink
+  primaryDark: '#DB1380',
+  secondary: '#00D4FF',    // Cyan Blue
+  
+  // Gradient colors
+  gradientPink: '#FF1493',
+  gradientBlue: '#00D4FF',
+  gradientPurple: '#8B5CF6',
   
   // Gaming accents
   xbox: '#107C10',
   playstation: '#006FCD',
   pc: '#FF6B00',
   
-  // Background
-  background: '#0A0A0F',
-  card: '#1A1A25',
-  cardLight: '#252535',
+  // Background - Pure Black
+  background: '#000000',
+  card: '#111111',
+  cardLight: '#1A1A1A',
   
   // Text
   text: '#FFFFFF',
-  textSecondary: '#9A9AA8',
-  textMuted: '#6B6B7B',
+  textSecondary: '#A0A0A0',
+  textMuted: '#666666',
   
   // Status
-  success: '#4ECDC4',
-  error: '#FF6B6B',
-  warning: '#FFE66D',
+  success: '#00FF88',
+  error: '#FF4757',
+  warning: '#FFD93D',
   
   // Others
-  border: '#2A2A3A',
-  overlay: 'rgba(0,0,0,0.7)',
-  match: '#FF69B4',
+  border: '#222222',
+  overlay: 'rgba(0,0,0,0.85)',
+  match: '#FF1493',        // Pink for matches
+  
+  // Accent Blue
+  blue: '#00D4FF',
+  blueLight: '#33DDFF',
+  blueDark: '#00A8CC',
+  
+  // Accent Pink
+  pink: '#FF1493',
+  pinkLight: '#FF69B4',
+  pinkDark: '#DB1380',
 };
 
 export const FONTS = {

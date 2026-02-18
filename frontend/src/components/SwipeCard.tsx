@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, CONSOLES } from '../constants/theme';
+import { COLORS, CONSOLES, LANGUAGES } from '../constants/theme';
 
 const { width, height } = Dimensions.get('window');
 const CARD_WIDTH = width - 40;
@@ -16,6 +16,7 @@ interface Profile {
   console?: string;
   games?: string[];
   interests?: string[];
+  languages?: string[];
   looking_for?: string;
   photo?: string;
   bio?: string;
@@ -38,6 +39,10 @@ export default function SwipeCard({ profile }: SwipeCardProps) {
       ami_regulier: 'Ami Régulier',
     };
     return id ? options[id] || id : '';
+  };
+
+  const getLanguageInfo = (langId: string) => {
+    return LANGUAGES.find(l => l.id === langId);
   };
 
   return (

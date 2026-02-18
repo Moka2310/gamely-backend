@@ -49,7 +49,7 @@ export default function LoginScreen() {
           {/* Logo */}
           <View style={styles.logoContainer}>
             <View style={styles.logoCircle}>
-              <Ionicons name="game-controller" size={50} color={COLORS.primary} />
+              <Ionicons name="game-controller" size={50} color={COLORS.pink} />
             </View>
             <Text style={styles.appName}>GamerSwipe</Text>
             <Text style={styles.tagline}>Trouve ton partenaire de jeu</Text>
@@ -68,7 +68,7 @@ export default function LoginScreen() {
             )}
 
             <View style={styles.inputContainer}>
-              <Ionicons name="mail-outline" size={20} color={COLORS.textMuted} />
+              <Ionicons name="mail-outline" size={20} color={COLORS.blue} />
               <TextInput
                 style={styles.input}
                 placeholder="Email"

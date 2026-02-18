@@ -328,14 +328,14 @@ export default function DiscoverScreen() {
             style={[styles.actionButton, styles.dislikeButton]}
             onPress={handleDislike}
           >
-            <Ionicons name="close" size={32} color={COLORS.error} />
+            <Ionicons name="close" size={32} color={COLORS.blue} />
           </TouchableOpacity>
           
           <TouchableOpacity
             style={[styles.actionButton, styles.likeButton]}
             onPress={handleLike}
           >
-            <Ionicons name="heart" size={32} color={COLORS.success} />
+            <Ionicons name="heart" size={32} color={COLORS.pink} />
           </TouchableOpacity>
         </View>
       )}

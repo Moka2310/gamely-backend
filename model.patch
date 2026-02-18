@@ -1,0 +1,378 @@
+diff --git a/backend_block_test.py b/backend_block_test.py
+new file mode 100644
+index 0000000..9869df9
+--- /dev/null
++++ b/backend_block_test.py
+@@ -0,0 +1,116 @@
++#!/usr/bin/env python3
++"""
++Test Block User API functionality
++"""
++
++import requests
++import json
++
++BASE_URL = "https://gamerswipe-1.preview.emergentagent.com/api"
++
++def test_block_functionality():
++    print("🚫 Testing Block User Functionality")
++    print("=" * 40)
++    
++    # First, create two test users for blocking
++    print("Setting up test users...")
++    
++    # Register blocker user
++    blocker_response = requests.post(f"{BASE_URL}/auth/register", json={
++        "email": "blocker@test.com",
++        "password": "test123",
++        "nickname": "BlockerUser"
++    })
++    
++    if blocker_response.status_code != 200:
++        print("❌ Failed to create blocker user")
++        return
++    
++    blocker_data = blocker_response.json()
++    blocker_token = blocker_data["token"]
++    blocker_id = blocker_data["user"]["id"]
++    
++    # Register blocked user
++    blocked_response = requests.post(f"{BASE_URL}/auth/register", json={
++        "email": "blocked@test.com",
++        "password": "test123",
++        "nickname": "BlockedUser"
++    })
++    
++    if blocked_response.status_code != 200:
++        print("❌ Failed to create blocked user")
++        return
++    
++    blocked_data = blocked_response.json()
++    blocked_id = blocked_data["user"]["id"]
++    
++    print(f"✅ Created test users: {blocker_id} and {blocked_id}")
++    
++    # Test 1: Block a user
++    print("\nTest 1: Block a user")
++    headers = {"Authorization": f"Bearer {blocker_token}"}
++    block_response = requests.post(f"{BASE_URL}/block", 
++                                 json={"user_id": blocked_id}, 
++                                 headers=headers)
++    
++    if block_response.status_code == 200:
++        result = block_response.json()
++        if result.get("success"):
++            print("✅ PASS - Successfully blocked user")
++        else:
++            print("❌ FAIL - Block response indicates failure")
++    else:
++        print(f"❌ FAIL - Expected 200, got {block_response.status_code}")
++        print(f"Response: {block_response.text}")
++    
++    # Test 2: Try to block same user again (should fail)
++    print("\nTest 2: Try to block same user again")
++    duplicate_block = requests.post(f"{BASE_URL}/block", 
++                                  json={"user_id": blocked_id}, 
++                                  headers=headers)
++    
++    if duplicate_block.status_code == 400:
++        print("✅ PASS - Correctly rejected duplicate block")
++    else:
++        print(f"❌ FAIL - Expected 400, got {duplicate_block.status_code}")
++    
++    # Test 3: Try to block self (should fail)
++    print("\nTest 3: Try to block self")
++    self_block = requests.post(f"{BASE_URL}/block", 
++                             json={"user_id": blocker_id}, 
++                             headers=headers)
++    
++    if self_block.status_code == 400:
++        print("✅ PASS - Correctly rejected self-block")
++    else:
++        print(f"❌ FAIL - Expected 400, got {self_block.status_code}")
++    
++    # Test 4: Unblock user
++    print("\nTest 4: Unblock user")
++    unblock_response = requests.delete(f"{BASE_URL}/block/{blocked_id}", 
++                                     headers=headers)
++    
++    if unblock_response.status_code == 200:
++        result = unblock_response.json()
++        if result.get("success"):
++            print("✅ PASS - Successfully unblocked user")
++        else:
++            print("❌ FAIL - Unblock response indicates failure")
++    else:
++        print(f"❌ FAIL - Expected 200, got {unblock_response.status_code}")
++    
++    # Test 5: Try to unblock non-blocked user (should fail)
++    print("\nTest 5: Try to unblock non-blocked user")
++    invalid_unblock = requests.delete(f"{BASE_URL}/block/{blocked_id}", 
++                                    headers=headers)
++    
++    if invalid_unblock.status_code == 404:
++        print("✅ PASS - Correctly rejected unblock of non-blocked user")
++    else:
++        print(f"❌ FAIL - Expected 404, got {invalid_unblock.status_code}")
++    
++    print("\n" + "=" * 40)
++    print("Block functionality testing completed")
++
++if __name__ == "__main__":
++    test_block_functionality()
+\ No newline at end of file
+diff --git a/backend_edge_test.py b/backend_edge_test.py
+new file mode 100644
+index 0000000..122ded8
+--- /dev/null
++++ b/backend_edge_test.py
+@@ -0,0 +1,84 @@
++#!/usr/bin/env python3
++"""
++GamerSwipe Backend API Edge Case Testing
++Tests error scenarios and edge cases
++"""
++
++import requests
++import json
++
++BASE_URL = "https://gamerswipe-1.preview.emergentagent.com/api"
++
++def test_edge_cases():
++    print("🔍 Testing Edge Cases and Error Scenarios")
++    print("=" * 50)
++    
++    # Test 1: Duplicate email registration
++    print("Test 1: Duplicate email registration")
++    response = requests.post(f"{BASE_URL}/auth/register", json={
++        "email": "player1@test.com",  # Already exists
++        "password": "test123",
++        "nickname": "DuplicateUser"
++    })
++    if response.status_code == 400:
++        print("✅ PASS - Correctly rejected duplicate email")
++    else:
++        print(f"❌ FAIL - Expected 400, got {response.status_code}")
++    
++    # Test 2: Duplicate nickname registration
++    print("\nTest 2: Duplicate nickname registration")
++    response = requests.post(f"{BASE_URL}/auth/register", json={
++        "email": "unique@test.com",
++        "password": "test123",
++        "nickname": "GamerPro1"  # Already exists
++    })
++    if response.status_code == 400:
++        print("✅ PASS - Correctly rejected duplicate nickname")
++    else:
++        print(f"❌ FAIL - Expected 400, got {response.status_code}")
++    
++    # Test 3: Invalid login credentials
++    print("\nTest 3: Invalid login credentials")
++    response = requests.post(f"{BASE_URL}/auth/login", json={
++        "email": "nonexistent@test.com",
++        "password": "wrongpassword"
++    })
++    if response.status_code == 401:
++        print("✅ PASS - Correctly rejected invalid credentials")
++    else:
++        print(f"❌ FAIL - Expected 401, got {response.status_code}")
++    
++    # Test 4: Unauthorized access without token
++    print("\nTest 4: Unauthorized access without token")
++    response = requests.get(f"{BASE_URL}/auth/me")
++    if response.status_code == 403:
++        print("✅ PASS - Correctly rejected request without token")
++    else:
++        print(f"❌ FAIL - Expected 403, got {response.status_code}")
++    
++    # Test 5: Invalid token
++    print("\nTest 5: Invalid token")
++    headers = {"Authorization": "Bearer invalid_token_here"}
++    response = requests.get(f"{BASE_URL}/auth/me", headers=headers)
++    if response.status_code == 401:
++        print("✅ PASS - Correctly rejected invalid token")
++    else:
++        print(f"❌ FAIL - Expected 401, got {response.status_code}")
++    
++    # Test 6: Health check endpoint
++    print("\nTest 6: Health check endpoint")
++    response = requests.get(f"{BASE_URL}/health")
++    if response.status_code == 200:
++        result = response.json()
++        if "status" in result and result["status"] == "healthy":
++            print("✅ PASS - Health check working")
++        else:
++            print("❌ FAIL - Health check response invalid")
++    else:
++        print(f"❌ FAIL - Expected 200, got {response.status_code}")
++    
++    print("\n" + "=" * 50)
++    print("Edge case testing completed")
++
++if __name__ == "__main__":
++    test_edge_cases()
+\ No newline at end of file
+diff --git a/test_result.md b/test_result.md
+index 0c2a11c..47a4c1d 100644
+--- a/test_result.md
++++ b/test_result.md
+@@ -119,99 +119,123 @@ backend:
+ 
+   - task: "User Login API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "high"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "Implemented JWT login with bcrypt password verification"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Login API working correctly. Returns JWT token and user object. Properly validates credentials and rejects invalid logins with 401 status."
+ 
+   - task: "Profile Update API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "high"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "PUT /api/profile for updating user profile fields"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Profile update API working correctly. Successfully updates all profile fields (age, gender, country, console, games, interests, looking_for, bio, photo). Validates nickname uniqueness."
+ 
+   - task: "Discover Profiles API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "high"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "GET /api/discover returns profiles to swipe with common interests"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Discover API working correctly. Returns profiles excluding self, already swiped users, and blocked users. Shows common games/interests and masked nicknames."
+ 
+   - task: "Swipe API with Match Detection"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "high"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "POST /api/swipe with daily limit (5 free swipes) and match detection"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Swipe API working perfectly. Enforces daily limits (5 free swipes), detects mutual likes to create matches, prevents duplicate swipes, tracks swipe counts correctly."
+ 
+   - task: "Matches API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "high"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "GET /api/matches returns all user matches with revealed nicknames"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Matches API working correctly. Returns all matches with revealed nicknames (key feature), excludes blocked users, shows last message preview."
+ 
+   - task: "Messages API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "medium"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "GET/POST /api/messages/{match_id} for chat functionality"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Messages API working correctly. Can send and retrieve messages for matches. Properly validates match membership and prevents messaging blocked users."
+ 
+   - task: "Block User API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "medium"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "POST /api/block and DELETE /api/block/{user_id}"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Block API working correctly. Can block/unblock users, prevents duplicate blocks, prevents self-blocking, properly handles error cases."
+ 
+   - task: "Subscription API"
+     implemented: true
+-    working: NA
++    working: true
+     file: "server.py"
+     stuck_count: 0
+     priority: "medium"
+-    needs_retesting: true
++    needs_retesting: false
+     status_history:
+       - working: NA
+         agent: "main"
+         comment: "Mock subscription - GET/POST /api/subscription for premium status"
++      - working: true
++        agent: "testing"
++        comment: "✅ TESTED: Subscription API working correctly. Shows swipe counts, premium status, can upgrade to premium. Daily swipe limits properly enforced (5 free swipes)."
+ 
+ frontend:
+   - task: "Login Screen"
+@@ -329,12 +353,7 @@ metadata:
+   run_ui: false
+ 
+ test_plan:
+-  current_focus:
+-    - "User Login API"
+-    - "Profile Update API"
+-    - "Discover Profiles API"
+-    - "Swipe API with Match Detection"
+-    - "Matches API"
++  current_focus: []
+   stuck_tasks: []
+   test_all: false
+   test_priority: "high_first"
+@@ -342,3 +361,5 @@ test_plan:
+ agent_communication:
+   - agent: "main"
+     message: "MVP implementation complete. Login screen verified working via screenshot. Backend has all APIs implemented. Please test the core APIs: registration, login, profile update, discover, swipe with match detection, and matches retrieval."
++  - agent: "testing"
++    message: "✅ BACKEND TESTING COMPLETE: All 9 backend APIs tested and working perfectly. Comprehensive testing included: user registration/login, profile updates, discover profiles, swipe mechanics with match detection, messaging, blocking, and subscription management. All edge cases and error scenarios also validated. No critical issues found. Backend is production-ready."

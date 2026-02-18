@@ -176,16 +176,23 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   logoWrapper: {
-    width: 300,
-    height: 300,
+    width: 320,
+    height: 320,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: SPACING.md,
   },
   logoGlow: {
     position: 'absolute',
-    width: 300,
-    height: 300,
+    width: 310,
+    height: 310,
+    opacity: 0.9,
+  },
+  logoGlow2: {
+    position: 'absolute',
+    width: 340,
+    height: 340,
+    opacity: 0.6,
   },
   logoImage: {
     width: 280,

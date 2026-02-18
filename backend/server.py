@@ -413,13 +413,24 @@ async def discover_profiles(
     # Exclude current user, swiped users, and blocked users
     exclude_ids = [user_id] + swiped_object_ids + blocked_object_ids
     
-    # Find profiles with complete profiles
-    profiles = await db.users.find({
+    # Build query with filters
+    query = {
         "_id": {"$nin": exclude_ids},
         "photo": {"$ne": None},
         "age": {"$ne": None},
         "console": {"$ne": None}
-    }).limit(20).to_list(20)
+    }
+    
+    # Apply optional filters
+    if gender:
+        query["gender"] = gender
+    if country:
+        query["country"] = country
+    if language:
+        query["languages"] = language  # MongoDB will match if language is in the array
+    
+    # Find profiles with complete profiles
+    profiles = await db.users.find(query).limit(20).to_list(20)
     
     # Format profiles with common interests
     user_games = set(current_user.get("games", []))
@@ -442,6 +453,7 @@ async def discover_profiles(
             "console": profile.get("console"),
             "games": profile.get("games", []),
             "interests": profile.get("interests", []),
+            "languages": profile.get("languages", []),
             "looking_for": profile.get("looking_for"),
             "photo": profile.get("photo"),
             "bio": profile.get("bio"),

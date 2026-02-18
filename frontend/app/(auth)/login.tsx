@@ -82,7 +82,7 @@ export default function LoginScreen() {
             </View>
 
             <View style={styles.inputContainer}>
-              <Ionicons name="lock-closed-outline" size={20} color={COLORS.textMuted} />
+              <Ionicons name="lock-closed-outline" size={20} color={COLORS.pink} />
               <TextInput
                 style={styles.input}
                 placeholder="Mot de passe"

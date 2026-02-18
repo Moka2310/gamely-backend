@@ -121,7 +121,7 @@ export default function SubscriptionScreen() {
   };
 
   const handleUpgrade = async () => {
-    if (isIAPAvailable && products.length > 0) {
+    if (isIAPAvailable && products.length > 0 && InAppPurchases) {
       // Real In-App Purchase
       setIsUpgrading(true);
       try {

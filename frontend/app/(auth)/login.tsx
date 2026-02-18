@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   loginButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.pink,
     height: 56,
     borderRadius: 28,
     justifyContent: 'center',
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
   },
   forgotPasswordText: {
-    color: COLORS.textSecondary,
+    color: COLORS.blue,
     fontSize: 14,
   },
   registerContainer: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   registerLink: {
-    color: COLORS.primary,
+    color: COLORS.blue,
     fontSize: 14,
     fontWeight: 'bold',
   },

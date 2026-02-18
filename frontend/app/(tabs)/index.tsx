@@ -59,6 +59,12 @@ export default function DiscoverScreen() {
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<Filters>({});
   const [tempFilters, setTempFilters] = useState<Filters>({});
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
+  const [countrySearch, setCountrySearch] = useState('');
+
+  const filteredCountries = COUNTRIES.filter(c => 
+    c.toLowerCase().includes(countrySearch.toLowerCase())
+  );
 
   const loadProfiles = useCallback(async (appliedFilters?: Filters) => {
     try {

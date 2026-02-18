@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { COLORS, SPACING, CONSOLES, LOOKING_FOR_OPTIONS, POPULAR_GAMES, POPULAR_INTERESTS, COUNTRIES } from '../src/constants/theme';
+import { COLORS, SPACING, CONSOLES, LOOKING_FOR_OPTIONS, POPULAR_GAMES, POPULAR_INTERESTS, COUNTRIES, LANGUAGES } from '../src/constants/theme';
 import { useAuthStore } from '../src/stores/authStore';
 import { profileAPI } from '../src/services/api';
 
@@ -32,10 +32,11 @@ export default function OnboardingScreen() {
   const [console_, setConsole] = useState('');
   const [games, setGames] = useState<string[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
   const [lookingFor, setLookingFor] = useState('');
   const [bio, setBio] = useState('');
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   const pickImage = async (useCamera: boolean) => {
     try {

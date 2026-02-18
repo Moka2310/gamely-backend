@@ -111,6 +111,13 @@ export default function LoginScreen() {
                 <Text style={styles.loginButtonText}>Se connecter</Text>
               )}
             </TouchableOpacity>
+
+            {/* Forgot password link */}
+            <Link href="/(auth)/forgot-password" asChild>
+              <TouchableOpacity style={styles.forgotPassword}>
+                <Text style={styles.forgotPasswordText}>Mot de passe oublié?</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
 
           {/* Register link */}

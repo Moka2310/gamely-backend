@@ -90,13 +90,22 @@ export default function OnboardingScreen() {
     );
   };
 
+  const toggleLanguage = (langId: string) => {
+    setLanguages(prev => 
+      prev.includes(langId) 
+        ? prev.filter(l => l !== langId)
+        : [...prev, langId]
+    );
+  };
+
   const canProceed = () => {
     switch (step) {
       case 1: return photo !== null;
       case 2: return age && gender && country;
       case 3: return console_ !== '';
       case 4: return games.length > 0;
-      case 5: return lookingFor !== '';
+      case 5: return languages.length > 0;
+      case 6: return lookingFor !== '';
       default: return true;
     }
   };

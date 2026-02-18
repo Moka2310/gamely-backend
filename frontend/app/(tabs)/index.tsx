@@ -179,7 +179,7 @@ export default function DiscoverScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
+          <ActivityIndicator size="large" color={COLORS.pink} />
           <Text style={styles.loadingText}>Chargement des profils...</Text>
         </View>
       </SafeAreaView>
@@ -191,13 +191,13 @@ export default function DiscoverScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Ionicons name="game-controller" size={28} color={COLORS.primary} />
+          <Ionicons name="game-controller" size={28} color={COLORS.pink} />
           <Text style={styles.headerTitle}>GamerSwipe</Text>
         </View>
         <View style={styles.headerRight}>
           {!isPremium && (
             <View style={styles.swipeCounter}>
-              <Ionicons name="flame" size={16} color={COLORS.primary} />
+              <Ionicons name="flame" size={16} color={COLORS.blue} />
               <Text style={styles.swipeCounterText}>{swipesRemaining}/5</Text>
             </View>
           )}

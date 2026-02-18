@@ -82,7 +82,14 @@ export const profileAPI = {
 
 // Discover API
 export const discoverAPI = {
-  getProfiles: () => api.get('/discover'),
+  getProfiles: (filters?: { gender?: string; country?: string; language?: string }) => {
+    const params = new URLSearchParams();
+    if (filters?.gender) params.append('gender', filters.gender);
+    if (filters?.country) params.append('country', filters.country);
+    if (filters?.language) params.append('language', filters.language);
+    const queryString = params.toString();
+    return api.get(`/discover${queryString ? `?${queryString}` : ''}`);
+  },
   swipe: (swiped_user_id: string, action: 'like' | 'dislike') =>
     api.post('/swipe', { swiped_user_id, action }),
 };

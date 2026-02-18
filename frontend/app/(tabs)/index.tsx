@@ -192,7 +192,7 @@ export default function DiscoverScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Ionicons name="game-controller" size={28} color={COLORS.pink} />
-          <Text style={styles.headerTitle}>GamerSwipe</Text>
+          <Text style={styles.headerTitle}>Gamly</Text>
         </View>
         <View style={styles.headerRight}>
           {!isPremium && (

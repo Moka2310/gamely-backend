@@ -808,4 +808,85 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  // Country selector styles
+  countrySelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardLight,
+    padding: SPACING.md,
+    borderRadius: 12,
+    gap: SPACING.sm,
+  },
+  countrySelectorText: {
+    flex: 1,
+    color: COLORS.textMuted,
+    fontSize: 16,
+  },
+  countrySelectorTextActive: {
+    color: COLORS.text,
+    fontWeight: '500',
+  },
+  // Country picker modal styles
+  countryModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'flex-end',
+  },
+  countryModalContent: {
+    backgroundColor: COLORS.card,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+  },
+  countryModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: SPACING.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  countryModalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text,
+  },
+  countrySearchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardLight,
+    margin: SPACING.lg,
+    marginBottom: 0,
+    padding: SPACING.md,
+    borderRadius: 12,
+    gap: SPACING.sm,
+  },
+  countrySearchInput: {
+    flex: 1,
+    color: COLORS.text,
+    fontSize: 16,
+  },
+  countryList: {
+    maxHeight: 400,
+  },
+  countryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  countryItemActive: {
+    backgroundColor: COLORS.primary + '20',
+  },
+  countryItemText: {
+    color: COLORS.text,
+    fontSize: 16,
+  },
+  countryItemTextActive: {
+    color: COLORS.primary,
+    fontWeight: '600',
+  },
 });

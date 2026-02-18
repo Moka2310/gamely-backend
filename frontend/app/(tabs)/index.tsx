@@ -386,29 +386,19 @@ export default function DiscoverScreen() {
               {/* Country filter */}
               <View style={styles.filterSection}>
                 <Text style={styles.filterSectionTitle}>Pays</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <View style={styles.horizontalOptions}>
-                    <TouchableOpacity
-                      style={[styles.filterChip, !tempFilters.country && styles.filterChipActive]}
-                      onPress={() => setTempFilters(f => ({ ...f, country: undefined }))}
-                    >
-                      <Text style={[styles.filterChipText, !tempFilters.country && styles.filterChipTextActive]}>
-                        Tous
-                      </Text>
-                    </TouchableOpacity>
-                    {COUNTRIES.map((c) => (
-                      <TouchableOpacity
-                        key={c}
-                        style={[styles.filterChip, tempFilters.country === c && styles.filterChipActive]}
-                        onPress={() => setTempFilters(f => ({ ...f, country: c }))}
-                      >
-                        <Text style={[styles.filterChipText, tempFilters.country === c && styles.filterChipTextActive]}>
-                          {c}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                </ScrollView>
+                <TouchableOpacity 
+                  style={styles.countrySelector}
+                  onPress={() => setShowCountryPicker(true)}
+                >
+                  <Ionicons name="location-outline" size={20} color={COLORS.textMuted} />
+                  <Text style={[
+                    styles.countrySelectorText,
+                    tempFilters.country && styles.countrySelectorTextActive
+                  ]}>
+                    {tempFilters.country || 'Tous les pays'}
+                  </Text>
+                  <Ionicons name="chevron-down" size={20} color={COLORS.textMuted} />
+                </TouchableOpacity>
               </View>
 
               {/* Language filter */}

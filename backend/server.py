@@ -316,6 +316,7 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         "console": current_user.get("console"),
         "games": current_user.get("games", []),
         "interests": current_user.get("interests", []),
+        "languages": current_user.get("languages", []),
         "looking_for": current_user.get("looking_for"),
         "photo": current_user.get("photo"),
         "bio": current_user.get("bio"),

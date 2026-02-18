@@ -247,6 +247,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  languagesRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 12,
+  },
+  languagesText: {
+    color: COLORS.textSecondary,
+    fontSize: 13,
+  },
   commonSection: {
     flexDirection: 'row',
     alignItems: 'center',

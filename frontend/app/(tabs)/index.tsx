@@ -662,17 +662,17 @@ const styles = StyleSheet.create({
   dislikeButton: {
     backgroundColor: COLORS.card,
     borderWidth: 2,
-    borderColor: COLORS.error,
+    borderColor: COLORS.blue,
   },
   likeButton: {
     backgroundColor: COLORS.card,
     borderWidth: 2,
-    borderColor: COLORS.success,
+    borderColor: COLORS.pink,
   },
   // Modal styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.9)',
     justifyContent: 'flex-end',
   },
   modalContent: {

@@ -696,6 +696,42 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     fontWeight: 'bold',
   },
+  languageOptions: {
+    gap: SPACING.md,
+  },
+  languageCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.card,
+    padding: SPACING.lg,
+    borderRadius: 16,
+    gap: SPACING.md,
+  },
+  languageCardActive: {
+    borderWidth: 2,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primary + '20',
+  },
+  languageFlag: {
+    fontSize: 28,
+  },
+  languageLabel: {
+    flex: 1,
+    color: COLORS.textSecondary,
+    fontSize: 16,
+  },
+  languageLabelActive: {
+    color: COLORS.text,
+    fontWeight: 'bold',
+  },
+  languageCheck: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   navigation: {
     flexDirection: 'row',
     padding: SPACING.lg,

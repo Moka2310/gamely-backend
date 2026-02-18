@@ -134,51 +134,63 @@ backend:
 
   - task: "Profile Update API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "PUT /api/profile for updating user profile fields"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Profile update API working correctly. Successfully updates all profile fields (age, gender, country, console, games, interests, looking_for, bio, photo). Validates nickname uniqueness."
 
   - task: "Discover Profiles API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "GET /api/discover returns profiles to swipe with common interests"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Discover API working correctly. Returns profiles excluding self, already swiped users, and blocked users. Shows common games/interests and masked nicknames."
 
   - task: "Swipe API with Match Detection"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "POST /api/swipe with daily limit (5 free swipes) and match detection"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Swipe API working perfectly. Enforces daily limits (5 free swipes), detects mutual likes to create matches, prevents duplicate swipes, tracks swipe counts correctly."
 
   - task: "Matches API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "GET /api/matches returns all user matches with revealed nicknames"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Matches API working correctly. Returns all matches with revealed nicknames (key feature), excludes blocked users, shows last message preview."
 
   - task: "Messages API"
     implemented: true

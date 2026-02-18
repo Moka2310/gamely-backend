@@ -187,7 +187,7 @@ export default function SubscriptionScreen() {
   };
 
   const handleRestorePurchases = async () => {
-    if (!isIAPAvailable) {
+    if (!isIAPAvailable || !InAppPurchases) {
       Alert.alert('Non disponible', 'La restauration des achats n\'est disponible que sur l\'application mobile.');
       return;
     }
@@ -198,7 +198,7 @@ export default function SubscriptionScreen() {
       if (responseCode === InAppPurchases.IAPResponseCode.OK && results && results.length > 0) {
         // Check if user has an active subscription
         const hasActiveSubscription = results.some(
-          (purchase) => purchase.productId === PREMIUM_PRODUCT_ID
+          (purchase: any) => purchase.productId === PREMIUM_PRODUCT_ID
         );
         
         if (hasActiveSubscription) {

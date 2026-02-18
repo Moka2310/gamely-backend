@@ -129,6 +129,7 @@ export default function OnboardingScreen() {
         console: console_,
         games,
         interests,
+        languages,
         looking_for: lookingFor,
         bio,
       };

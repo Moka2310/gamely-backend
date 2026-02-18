@@ -194,39 +194,48 @@ backend:
 
   - task: "Messages API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "GET/POST /api/messages/{match_id} for chat functionality"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Messages API working correctly. Can send and retrieve messages for matches. Properly validates match membership and prevents messaging blocked users."
 
   - task: "Block User API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "POST /api/block and DELETE /api/block/{user_id}"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Block API working correctly. Can block/unblock users, prevents duplicate blocks, prevents self-blocking, properly handles error cases."
 
   - task: "Subscription API"
     implemented: true
-    working: NA
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: NA
         agent: "main"
         comment: "Mock subscription - GET/POST /api/subscription for premium status"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Subscription API working correctly. Shows swipe counts, premium status, can upgrade to premium. Daily swipe limits properly enforced (5 free swipes)."
 
 frontend:
   - task: "Login Screen"

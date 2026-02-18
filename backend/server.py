@@ -191,6 +191,7 @@ async def register(user_data: UserCreate):
         "console": None,
         "games": [],
         "interests": [],
+        "languages": [],
         "looking_for": None,
         "photo": None,
         "bio": None,

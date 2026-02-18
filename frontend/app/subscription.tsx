@@ -12,10 +12,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import * as InAppPurchases from 'expo-in-app-purchases';
 import { COLORS, SPACING } from '../src/constants/theme';
 import { subscriptionAPI } from '../src/services/api';
 import { useAuthStore } from '../src/stores/authStore';
+
+// Conditionally import InAppPurchases (not available on web)
+let InAppPurchases: any = null;
+if (Platform.OS !== 'web') {
+  InAppPurchases = require('expo-in-app-purchases');
+}
 
 // Product ID for premium subscription (configure in App Store Connect / Google Play Console)
 const PREMIUM_PRODUCT_ID = 'gamly_premium_weekly';

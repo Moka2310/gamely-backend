@@ -7,12 +7,14 @@ import {
   ActivityIndicator,
   Dimensions,
   Alert,
+  Modal,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Swiper from 'react-native-deck-swiper';
-import { COLORS, SPACING } from '../../src/constants/theme';
+import { COLORS, SPACING, COUNTRIES, LANGUAGES, GENDERS } from '../../src/constants/theme';
 import { discoverAPI, subscriptionAPI } from '../../src/services/api';
 import { useAuthStore } from '../../src/stores/authStore';
 import SwipeCard from '../../src/components/SwipeCard';
@@ -29,12 +31,19 @@ interface Profile {
   console?: string;
   games?: string[];
   interests?: string[];
+  languages?: string[];
   looking_for?: string;
   photo?: string;
   bio?: string;
   common_games?: string[];
   common_interests?: string[];
   common_count?: number;
+}
+
+interface Filters {
+  gender?: string;
+  country?: string;
+  language?: string;
 }
 
 export default function DiscoverScreen() {
@@ -47,12 +56,15 @@ export default function DiscoverScreen() {
   const [isPremium, setIsPremium] = useState(false);
   const [showMatchModal, setShowMatchModal] = useState(false);
   const [matchData, setMatchData] = useState<any>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState<Filters>({});
+  const [tempFilters, setTempFilters] = useState<Filters>({});
 
-  const loadProfiles = useCallback(async () => {
+  const loadProfiles = useCallback(async (appliedFilters?: Filters) => {
     try {
       setIsLoading(true);
       const [profilesRes, subRes] = await Promise.all([
-        discoverAPI.getProfiles(),
+        discoverAPI.getProfiles(appliedFilters || filters),
         subscriptionAPI.getStatus(),
       ]);
       setProfiles(profilesRes.data);
@@ -64,7 +76,7 @@ export default function DiscoverScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     // Check if profile is complete
@@ -73,7 +85,7 @@ export default function DiscoverScreen() {
       return;
     }
     loadProfiles();
-  }, [user, loadProfiles]);
+  }, [user]);
 
   const handleSwipe = async (direction: 'left' | 'right', index: number) => {
     const profile = profiles[index];
@@ -138,6 +150,23 @@ export default function DiscoverScreen() {
     }
   };
 
+  const openFilters = () => {
+    setTempFilters({ ...filters });
+    setShowFilters(true);
+  };
+
+  const applyFilters = () => {
+    setFilters(tempFilters);
+    setShowFilters(false);
+    loadProfiles(tempFilters);
+  };
+
+  const clearFilters = () => {
+    setTempFilters({});
+  };
+
+  const hasActiveFilters = filters.gender || filters.country || filters.language;
+
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -164,6 +193,12 @@ export default function DiscoverScreen() {
               <Text style={styles.swipeCounterText}>{swipesRemaining}/5</Text>
             </View>
           )}
+          <TouchableOpacity 
+            style={[styles.filterButton, hasActiveFilters && styles.filterButtonActive]} 
+            onPress={openFilters}
+          >
+            <Ionicons name="options" size={22} color={hasActiveFilters ? 'white' : COLORS.textMuted} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/subscription')}>
             <Ionicons 
               name={isPremium ? 'star' : 'star-outline'} 
@@ -173,6 +208,28 @@ export default function DiscoverScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Active filters display */}
+      {hasActiveFilters && (
+        <View style={styles.activeFilters}>
+          <Text style={styles.activeFiltersLabel}>Filtres:</Text>
+          {filters.gender && (
+            <View style={styles.filterTag}>
+              <Text style={styles.filterTagText}>{filters.gender}</Text>
+            </View>
+          )}
+          {filters.country && (
+            <View style={styles.filterTag}>
+              <Text style={styles.filterTagText}>{filters.country}</Text>
+            </View>
+          )}
+          {filters.language && (
+            <View style={styles.filterTag}>
+              <Text style={styles.filterTagText}>{LANGUAGES.find(l => l.id === filters.language)?.label}</Text>
+            </View>
+          )}
+        </View>
+      )}
 
       {/* Swiper */}
       <View style={styles.swiperContainer}>
@@ -243,8 +300,12 @@ export default function DiscoverScreen() {
           <View style={styles.emptyContainer}>
             <Ionicons name="game-controller-outline" size={80} color={COLORS.textMuted} />
             <Text style={styles.emptyTitle}>Plus de profils!</Text>
-            <Text style={styles.emptySubtitle}>Reviens plus tard pour découvrir de nouveaux gamers</Text>
-            <TouchableOpacity style={styles.refreshButton} onPress={loadProfiles}>
+            <Text style={styles.emptySubtitle}>
+              {hasActiveFilters 
+                ? 'Essaie de modifier tes filtres pour voir plus de profils'
+                : 'Reviens plus tard pour découvrir de nouveaux gamers'}
+            </Text>
+            <TouchableOpacity style={styles.refreshButton} onPress={() => loadProfiles()}>
               <Ionicons name="refresh" size={20} color="white" />
               <Text style={styles.refreshButtonText}>Actualiser</Text>
             </TouchableOpacity>
@@ -278,6 +339,119 @@ export default function DiscoverScreen() {
         onClose={handleMatchClose}
         onChat={handleMatchChat}
       />
+
+      {/* Filters Modal */}
+      <Modal
+        visible={showFilters}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowFilters(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Filtres de recherche</Text>
+              <TouchableOpacity onPress={() => setShowFilters(false)}>
+                <Ionicons name="close" size={24} color={COLORS.text} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
+              {/* Gender filter */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Je recherche</Text>
+                <View style={styles.filterOptions}>
+                  <TouchableOpacity
+                    style={[styles.filterOption, !tempFilters.gender && styles.filterOptionActive]}
+                    onPress={() => setTempFilters(f => ({ ...f, gender: undefined }))}
+                  >
+                    <Text style={[styles.filterOptionText, !tempFilters.gender && styles.filterOptionTextActive]}>
+                      Tous
+                    </Text>
+                  </TouchableOpacity>
+                  {GENDERS.slice(0, 2).map((g) => (
+                    <TouchableOpacity
+                      key={g.id}
+                      style={[styles.filterOption, tempFilters.gender === g.id && styles.filterOptionActive]}
+                      onPress={() => setTempFilters(f => ({ ...f, gender: g.id }))}
+                    >
+                      <Text style={[styles.filterOptionText, tempFilters.gender === g.id && styles.filterOptionTextActive]}>
+                        {g.label}s
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              {/* Country filter */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Pays</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={styles.horizontalOptions}>
+                    <TouchableOpacity
+                      style={[styles.filterChip, !tempFilters.country && styles.filterChipActive]}
+                      onPress={() => setTempFilters(f => ({ ...f, country: undefined }))}
+                    >
+                      <Text style={[styles.filterChipText, !tempFilters.country && styles.filterChipTextActive]}>
+                        Tous
+                      </Text>
+                    </TouchableOpacity>
+                    {COUNTRIES.map((c) => (
+                      <TouchableOpacity
+                        key={c}
+                        style={[styles.filterChip, tempFilters.country === c && styles.filterChipActive]}
+                        onPress={() => setTempFilters(f => ({ ...f, country: c }))}
+                      >
+                        <Text style={[styles.filterChipText, tempFilters.country === c && styles.filterChipTextActive]}>
+                          {c}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+
+              {/* Language filter */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Langue parlée</Text>
+                <View style={styles.languageOptions}>
+                  <TouchableOpacity
+                    style={[styles.languageOption, !tempFilters.language && styles.languageOptionActive]}
+                    onPress={() => setTempFilters(f => ({ ...f, language: undefined }))}
+                  >
+                    <Text style={styles.languageFlag}>🌍</Text>
+                    <Text style={[styles.languageLabel, !tempFilters.language && styles.languageLabelActive]}>
+                      Toutes
+                    </Text>
+                  </TouchableOpacity>
+                  {LANGUAGES.map((lang) => (
+                    <TouchableOpacity
+                      key={lang.id}
+                      style={[styles.languageOption, tempFilters.language === lang.id && styles.languageOptionActive]}
+                      onPress={() => setTempFilters(f => ({ ...f, language: lang.id }))}
+                    >
+                      <Text style={styles.languageFlag}>{lang.flag}</Text>
+                      <Text style={[styles.languageLabel, tempFilters.language === lang.id && styles.languageLabelActive]}>
+                        {lang.label}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* Modal actions */}
+            <View style={styles.modalActions}>
+              <TouchableOpacity style={styles.clearButton} onPress={clearFilters}>
+                <Text style={styles.clearButtonText}>Réinitialiser</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+                <Text style={styles.applyButtonText}>Appliquer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -321,6 +495,39 @@ const styles = StyleSheet.create({
   swipeCounterText: {
     color: COLORS.text,
     fontSize: 14,
+    fontWeight: '600',
+  },
+  filterButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: COLORS.card,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterButtonActive: {
+    backgroundColor: COLORS.primary,
+  },
+  activeFilters: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.sm,
+    gap: SPACING.sm,
+  },
+  activeFiltersLabel: {
+    color: COLORS.textMuted,
+    fontSize: 12,
+  },
+  filterTag: {
+    backgroundColor: COLORS.primary + '30',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  filterTagText: {
+    color: COLORS.primary,
+    fontSize: 12,
     fontWeight: '600',
   },
   loadingContainer: {
@@ -396,5 +603,144 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderWidth: 2,
     borderColor: COLORS.success,
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: COLORS.card,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: SPACING.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text,
+  },
+  modalScroll: {
+    padding: SPACING.lg,
+  },
+  filterSection: {
+    marginBottom: SPACING.xl,
+  },
+  filterSectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.text,
+    marginBottom: SPACING.md,
+  },
+  filterOptions: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+  },
+  filterOption: {
+    flex: 1,
+    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.cardLight,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  filterOptionActive: {
+    backgroundColor: COLORS.primary,
+  },
+  filterOptionText: {
+    color: COLORS.textSecondary,
+    fontSize: 14,
+  },
+  filterOptionTextActive: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  horizontalOptions: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+    paddingRight: SPACING.lg,
+  },
+  filterChip: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    backgroundColor: COLORS.cardLight,
+    borderRadius: 20,
+  },
+  filterChipActive: {
+    backgroundColor: COLORS.primary,
+  },
+  filterChipText: {
+    color: COLORS.textSecondary,
+    fontSize: 14,
+  },
+  filterChipTextActive: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  languageOptions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
+  },
+  languageOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    backgroundColor: COLORS.cardLight,
+    borderRadius: 20,
+    gap: SPACING.xs,
+  },
+  languageOptionActive: {
+    backgroundColor: COLORS.primary,
+  },
+  languageFlag: {
+    fontSize: 16,
+  },
+  languageLabel: {
+    color: COLORS.textSecondary,
+    fontSize: 14,
+  },
+  languageLabelActive: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  modalActions: {
+    flexDirection: 'row',
+    padding: SPACING.lg,
+    gap: SPACING.md,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
+  clearButton: {
+    flex: 1,
+    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.cardLight,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  clearButtonText: {
+    color: COLORS.textSecondary,
+    fontSize: 16,
+  },
+  applyButton: {
+    flex: 2,
+    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

@@ -51,10 +51,11 @@ export default function LoginScreen() {
         >
           {/* Logo */}
           <View style={styles.logoContainer}>
-            <View style={styles.logoCircle}>
-              <Ionicons name="game-controller" size={50} color={COLORS.pink} />
-            </View>
-            <Text style={styles.appName}>GamerSwipe</Text>
+            <Image
+              source={{ uri: GAMLY_LOGO }}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
             <Text style={styles.tagline}>Trouve ton partenaire de jeu</Text>
           </View>
 

@@ -448,6 +448,73 @@ export default function DiscoverScreen() {
           </View>
         </View>
       </Modal>
+
+      {/* Country Picker Modal */}
+      <Modal
+        visible={showCountryPicker}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowCountryPicker(false)}
+      >
+        <View style={styles.countryModalOverlay}>
+          <View style={styles.countryModalContent}>
+            <View style={styles.countryModalHeader}>
+              <Text style={styles.countryModalTitle}>Choisir un pays</Text>
+              <TouchableOpacity onPress={() => setShowCountryPicker(false)}>
+                <Ionicons name="close" size={24} color={COLORS.text} />
+              </TouchableOpacity>
+            </View>
+            
+            {/* Search input */}
+            <View style={styles.countrySearchContainer}>
+              <Ionicons name="search" size={20} color={COLORS.textMuted} />
+              <TextInput
+                style={styles.countrySearchInput}
+                placeholder="Rechercher un pays..."
+                placeholderTextColor={COLORS.textMuted}
+                value={countrySearch}
+                onChangeText={setCountrySearch}
+                autoCorrect={false}
+              />
+              {countrySearch.length > 0 && (
+                <TouchableOpacity onPress={() => setCountrySearch('')}>
+                  <Ionicons name="close-circle" size={20} color={COLORS.textMuted} />
+                </TouchableOpacity>
+              )}
+            </View>
+            
+            {/* Country list */}
+            <FlatList
+              data={[{ id: 'all', name: 'Tous les pays' }, ...filteredCountries.map(c => ({ id: c, name: c }))]}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={[
+                    styles.countryItem,
+                    (item.id === 'all' ? !tempFilters.country : tempFilters.country === item.name) && styles.countryItemActive
+                  ]}
+                  onPress={() => {
+                    setTempFilters(f => ({ ...f, country: item.id === 'all' ? undefined : item.name }));
+                    setShowCountryPicker(false);
+                    setCountrySearch('');
+                  }}
+                >
+                  <Text style={[
+                    styles.countryItemText,
+                    (item.id === 'all' ? !tempFilters.country : tempFilters.country === item.name) && styles.countryItemTextActive
+                  ]}>
+                    {item.name}
+                  </Text>
+                  {(item.id === 'all' ? !tempFilters.country : tempFilters.country === item.name) && (
+                    <Ionicons name="checkmark" size={20} color={COLORS.primary} />
+                  )}
+                </TouchableOpacity>
+              )}
+              style={styles.countryList}
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

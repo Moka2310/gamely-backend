@@ -56,7 +56,9 @@ export default function LoginScreen() {
               style={styles.logoImage}
               resizeMode="contain"
             />
-            <Text style={styles.tagline}>Trouve ton partenaire de jeu</Text>
+            <View style={styles.neonContainer}>
+              <Text style={styles.tagline}>Trouve ton partenaire de jeu</Text>
+            </View>
           </View>
 
           {/* Form */}

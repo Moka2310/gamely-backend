@@ -89,17 +89,13 @@ export default function LoginScreen() {
         >
           {/* Logo with Animated Neon Glow */}
           <View style={styles.logoContainer}>
-            <View style={styles.logoWrapper}>
-              {/* Animated neon glow layers */}
-              <Animated.View style={[styles.neonGlowOuter, animatedGlowStyle]} />
-              <Animated.View style={[styles.neonGlowMiddle, animatedGlowStyle]} />
-              <Animated.View style={[styles.neonGlowInner, animatedGlowStyle]} />
+            <Animated.View style={[styles.logoWrapper, animatedGlowStyle]}>
               <Image
                 source={{ uri: GAMLY_LOGO }}
                 style={styles.logoImage}
                 resizeMode="contain"
               />
-            </View>
+            </Animated.View>
             <View style={styles.neonContainer}>
               <Text style={styles.tagline}>Trouve ton partenaire de jeu</Text>
             </View>

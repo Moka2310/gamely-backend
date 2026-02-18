@@ -160,6 +160,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: SPACING.md,
+    borderWidth: 2,
+    borderColor: COLORS.pink,
   },
   appName: {
     fontSize: 32,
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 16,
-    color: COLORS.textSecondary,
+    color: COLORS.blue,
   },
   form: {
     gap: SPACING.md,
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
   errorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,107,107,0.1)',
+    backgroundColor: 'rgba(255,71,87,0.1)',
     padding: SPACING.md,
     borderRadius: 12,
     gap: SPACING.sm,

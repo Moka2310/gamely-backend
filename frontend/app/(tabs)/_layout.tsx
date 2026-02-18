@@ -10,7 +10,7 @@ export default function TabsLayout() {
       <StatusBar style="light" />
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: COLORS.primary,
+          tabBarActiveTintColor: COLORS.pink,
           tabBarInactiveTintColor: COLORS.textMuted,
           tabBarStyle: {
             backgroundColor: COLORS.card,

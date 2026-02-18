@@ -154,24 +154,12 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: SPACING.xxl,
+    marginBottom: SPACING.xl,
   },
-  logoCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: COLORS.card,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoImage: {
+    width: 220,
+    height: 220,
     marginBottom: SPACING.md,
-    borderWidth: 2,
-    borderColor: COLORS.pink,
-  },
-  appName: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    marginBottom: SPACING.xs,
   },
   tagline: {
     fontSize: 16,

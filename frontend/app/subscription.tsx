@@ -97,10 +97,12 @@ export default function SubscriptionScreen() {
     }
   };
 
-  const handlePurchaseComplete = async (purchase: InAppPurchases.InAppPurchase) => {
+  const handlePurchaseComplete = async (purchase: any) => {
     try {
       // Finish the transaction
-      await InAppPurchases.finishTransactionAsync(purchase, true);
+      if (InAppPurchases) {
+        await InAppPurchases.finishTransactionAsync(purchase, true);
+      }
       
       // Update backend
       await subscriptionAPI.upgrade();

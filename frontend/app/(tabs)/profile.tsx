@@ -98,7 +98,7 @@ export default function ProfileScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
+          <ActivityIndicator size="large" color={COLORS.pink} />
         </View>
       </SafeAreaView>
     );
@@ -111,7 +111,7 @@ export default function ProfileScreen() {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Mon Profil</Text>
           <TouchableOpacity onPress={() => router.push('/edit-profile')}>
-            <Ionicons name="create-outline" size={24} color={COLORS.primary} />
+            <Ionicons name="create-outline" size={24} color={COLORS.blue} />
           </TouchableOpacity>
         </View>
 
@@ -163,8 +163,8 @@ export default function ProfileScreen() {
           )}
 
           {/* Age & Gender */}
-          <View style={styles.infoCard}>
-            <Ionicons name="person-outline" size={24} color={COLORS.primary} />
+          <View style={[styles.infoCard, { borderLeftColor: COLORS.pink }]}>
+            <Ionicons name="person-outline" size={24} color={COLORS.pink} />
             <View style={styles.infoCardContent}>
               <Text style={styles.infoCardLabel}>Informations</Text>
               <Text style={styles.infoCardValue}>
@@ -175,8 +175,8 @@ export default function ProfileScreen() {
 
           {/* Country */}
           {user.country && (
-            <View style={styles.infoCard}>
-              <Ionicons name="location-outline" size={24} color={COLORS.primary} />
+            <View style={[styles.infoCard, { borderLeftColor: COLORS.blue }]}>
+              <Ionicons name="location-outline" size={24} color={COLORS.blue} />
               <View style={styles.infoCardContent}>
                 <Text style={styles.infoCardLabel}>Pays</Text>
                 <Text style={styles.infoCardValue}>{user.country}</Text>
@@ -186,8 +186,8 @@ export default function ProfileScreen() {
 
           {/* Looking for */}
           {user.looking_for && (
-            <View style={styles.infoCard}>
-              <Ionicons name="search-outline" size={24} color={COLORS.primary} />
+            <View style={[styles.infoCard, { borderLeftColor: COLORS.pink }]}>
+              <Ionicons name="search-outline" size={24} color={COLORS.pink} />
               <View style={styles.infoCardContent}>
                 <Text style={styles.infoCardLabel}>Recherche</Text>
                 <Text style={styles.infoCardValue}>{getLookingForLabel()}</Text>
@@ -199,10 +199,13 @@ export default function ProfileScreen() {
         {/* Games */}
         {user.games && user.games.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Mes Jeux</Text>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="game-controller" size={20} color={COLORS.blue} />
+              <Text style={styles.sectionTitle}>Mes Jeux</Text>
+            </View>
             <View style={styles.tags}>
               {user.games.map((game, i) => (
-                <View key={i} style={styles.tag}>
+                <View key={i} style={[styles.tag, styles.tagBlue]}>
                   <Text style={styles.tagText}>{game}</Text>
                 </View>
               ))}
@@ -213,11 +216,31 @@ export default function ProfileScreen() {
         {/* Interests */}
         {user.interests && user.interests.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Mes Intérêts</Text>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="heart" size={20} color={COLORS.pink} />
+              <Text style={styles.sectionTitle}>Mes Intérêts</Text>
+            </View>
             <View style={styles.tags}>
               {user.interests.map((interest, i) => (
-                <View key={i} style={styles.tag}>
+                <View key={i} style={[styles.tag, styles.tagPink]}>
                   <Text style={styles.tagText}>{interest}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {/* Languages */}
+        {user.languages && user.languages.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="chatbubble" size={20} color={COLORS.blue} />
+              <Text style={styles.sectionTitle}>Langues</Text>
+            </View>
+            <View style={styles.tags}>
+              {user.languages.map((lang, i) => (
+                <View key={i} style={[styles.tag, styles.tagBlue]}>
+                  <Text style={styles.tagText}>{lang}</Text>
                 </View>
               ))}
             </View>
@@ -227,7 +250,10 @@ export default function ProfileScreen() {
         {/* Bio */}
         {user.bio && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>À propos</Text>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="document-text" size={20} color={COLORS.pink} />
+              <Text style={styles.sectionTitle}>À propos</Text>
+            </View>
             <Text style={styles.bioText}>{user.bio}</Text>
           </View>
         )}
@@ -247,7 +273,7 @@ export default function ProfileScreen() {
             style={styles.actionButton}
             onPress={() => router.push('/edit-profile')}
           >
-            <Ionicons name="create-outline" size={24} color={COLORS.primary} />
+            <Ionicons name="create-outline" size={24} color={COLORS.blue} />
             <Text style={styles.actionButtonText}>Modifier le profil</Text>
             <Ionicons name="chevron-forward" size={20} color={COLORS.textMuted} />
           </TouchableOpacity>
@@ -299,7 +325,7 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     borderWidth: 3,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.pink,
   },
   noPhoto: {
     backgroundColor: COLORS.card,
@@ -310,7 +336,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.blue,
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -333,7 +359,7 @@ const styles = StyleSheet.create({
   premiumBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,230,109,0.15)',
+    backgroundColor: 'rgba(255,217,61,0.15)',
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
     borderRadius: 20,
@@ -356,7 +382,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     gap: SPACING.md,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.primary,
   },
   infoCardContent: {
     flex: 1,
@@ -374,11 +399,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     marginTop: SPACING.lg,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    marginBottom: SPACING.sm,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: COLORS.text,
-    marginBottom: SPACING.sm,
   },
   tags: {
     flexDirection: 'row',
@@ -386,10 +416,19 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   tag: {
-    backgroundColor: COLORS.card,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 20,
+  },
+  tagBlue: {
+    backgroundColor: COLORS.blue + '20',
+    borderWidth: 1,
+    borderColor: COLORS.blue + '40',
+  },
+  tagPink: {
+    backgroundColor: COLORS.pink + '20',
+    borderWidth: 1,
+    borderColor: COLORS.pink + '40',
   },
   tagText: {
     color: COLORS.text,

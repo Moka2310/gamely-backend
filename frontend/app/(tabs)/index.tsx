@@ -191,9 +191,22 @@ export default function DiscoverScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+      {/* Header with Large Logo and Halo */}
       <View style={styles.header}>
-        <View style={styles.headerLeft}>
+        <View style={styles.headerLogoContainer}>
+          {/* Halo glow effect */}
+          <Image
+            source={{ uri: GAMLY_LOGO }}
+            style={styles.headerLogoGlow}
+            resizeMode="contain"
+            blurRadius={20}
+          />
+          <Image
+            source={{ uri: GAMLY_LOGO }}
+            style={styles.headerLogoGlow2}
+            resizeMode="contain"
+            blurRadius={35}
+          />
           <Image source={{ uri: GAMLY_LOGO }} style={styles.headerLogo} resizeMode="contain" />
         </View>
         <View style={styles.headerRight}>

@@ -616,7 +616,8 @@ async def get_matches(current_user: dict = Depends(get_current_user)):
                         "nickname": other_user["nickname"],  # Revealed after match
                         "photo": other_user.get("photo"),
                         "console": other_user.get("console"),
-                        "country": other_user.get("country")
+                        "country": other_user.get("country"),
+                        "gender": other_user.get("gender")
                     },
                     "matched_at": match["matched_at"],
                     "last_message": {

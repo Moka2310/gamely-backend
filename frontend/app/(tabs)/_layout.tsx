@@ -30,8 +30,9 @@ export default function TabsLayout() {
           name="index"
           options={{
             title: 'Découvrir',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="game-controller" size={size} color={color} />
+            tabBarActiveTintColor: COLORS.blue,
+            tabBarIcon: ({ color, size, focused }) => (
+              <Ionicons name="game-controller" size={size} color={focused ? COLORS.blue : COLORS.textMuted} />
             ),
           }}
         />

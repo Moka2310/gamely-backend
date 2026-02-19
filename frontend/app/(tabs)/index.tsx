@@ -553,9 +553,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.sm,
   },
+  headerLogoContainer: {
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerLogoGlow: {
+    position: 'absolute',
+    width: 85,
+    height: 85,
+    opacity: 0.8,
+  },
+  headerLogoGlow2: {
+    position: 'absolute',
+    width: 95,
+    height: 95,
+    opacity: 0.5,
+  },
   headerLogo: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
   },
   headerTitle: {
     fontSize: 24,

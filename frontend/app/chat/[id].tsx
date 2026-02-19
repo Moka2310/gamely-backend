@@ -33,6 +33,7 @@ interface MatchUser {
   nickname: string;
   photo?: string;
   console?: string;
+  gender?: string;
 }
 
 export default function ChatScreen() {

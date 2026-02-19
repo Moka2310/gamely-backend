@@ -14,21 +14,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import * as ImagePicker from 'expo-image-picker';
 import { COLORS, SPACING, CONSOLES, LOOKING_FOR_OPTIONS } from '../../src/constants/theme';
 import { useAuthStore } from '../../src/stores/authStore';
 import { profileAPI, subscriptionAPI, authAPI } from '../../src/services/api';
 
-// Gradient Title Component - Works on all platforms
+// Gradient Title with Halo effect
 const GradientTitle = ({ children }: { children: string }) => (
-  <LinearGradient
-    colors={[COLORS.pink, COLORS.blue]}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 0 }}
-    style={styles.gradientTitleContainer}
-  >
-    <Text style={styles.gradientTitleText}>{children}</Text>
-  </LinearGradient>
+  <View style={styles.gradientTitleWrapper}>
+    {/* Halo/Glow effect behind text */}
+    <Text style={styles.titleHalo}>{children}</Text>
+    {/* Gradient text using MaskedView */}
+    <MaskedView
+      maskElement={<Text style={styles.titleMask}>{children}</Text>}
+    >
+      <LinearGradient
+        colors={[COLORS.pink, COLORS.blue]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+      >
+        <Text style={[styles.titleMask, { opacity: 0 }]}>{children}</Text>
+      </LinearGradient>
+    </MaskedView>
+  </View>
 );
 
 // Gradient Button Component

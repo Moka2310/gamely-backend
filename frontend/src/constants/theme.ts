@@ -118,6 +118,9 @@ export const COUNTRIES = [
   'Zambie', 'Zimbabwe'
 ];
 
+// Alias for ALL_COUNTRIES
+export const ALL_COUNTRIES = COUNTRIES;
+
 export const LANGUAGES = [
   { id: 'français', label: 'Français', flag: '🇫🇷' },
   { id: 'anglais', label: 'Anglais', flag: '🇬🇧' },

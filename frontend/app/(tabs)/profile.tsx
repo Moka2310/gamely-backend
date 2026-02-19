@@ -348,6 +348,16 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
   },
+  gradientTitleContainer: {
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+  },
+  gradientTitleText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+  },
   photoSection: {
     alignItems: 'center',
     paddingVertical: SPACING.lg,

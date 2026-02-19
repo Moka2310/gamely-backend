@@ -42,10 +42,9 @@ export default function MatchModal({ visible, matchData, onClose, onChat }: Matc
     >
       <View style={styles.overlay}>
         <View style={styles.container}>
-          {/* Hearts animation placeholder */}
-          <View style={styles.heartsContainer}>
-            <Ionicons name="heart" size={60} color={COLORS.match} />
-            <Ionicons name="heart" size={40} color={COLORS.primary} style={styles.heartSmall} />
+          {/* Game controller icon instead of hearts */}
+          <View style={styles.iconContainer}>
+            <Ionicons name="game-controller" size={60} color={COLORS.blue} />
           </View>
           
           <Text style={styles.matchText}>C'est un Match!</Text>

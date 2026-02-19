@@ -347,6 +347,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.text,
   },
+  headerTitleMask: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
   photoSection: {
     alignItems: 'center',
     paddingVertical: SPACING.lg,

@@ -540,6 +540,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.sm,
   },
+  headerLogo: {
+    width: 50,
+    height: 50,
+  },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',

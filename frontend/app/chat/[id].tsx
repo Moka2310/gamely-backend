@@ -172,16 +172,33 @@ export default function ChatScreen() {
     return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
   };
 
-  const renderMessage = ({ item }: { item: Message }) => (
-    <View style={[styles.messageContainer, item.is_mine ? styles.myMessage : styles.theirMessage]}>
-      <View style={[styles.messageBubble, item.is_mine ? styles.myBubble : styles.theirBubble]}>
-        <Text style={[styles.messageText, item.is_mine && styles.myMessageText]}>{item.content}</Text>
-        <Text style={[styles.messageTime, item.is_mine && styles.myMessageTime]}>
-          {formatTime(item.timestamp)}
-        </Text>
+  const renderMessage = ({ item }: { item: Message }) => {
+    // Determine bubble color based on gender for received messages
+    const getTheirBubbleColor = () => {
+      if (matchUser?.gender === 'femme') {
+        return COLORS.pink;
+      } else if (matchUser?.gender === 'homme') {
+        return COLORS.blue;
+      }
+      return COLORS.card; // Default for 'autre' or unknown
+    };
+
+    return (
+      <View style={[styles.messageContainer, item.is_mine ? styles.myMessage : styles.theirMessage]}>
+        <View style={[
+          styles.messageBubble, 
+          item.is_mine ? styles.myBubble : [styles.theirBubble, { backgroundColor: getTheirBubbleColor() }]
+        ]}>
+          <Text style={[styles.messageText, (item.is_mine || matchUser?.gender === 'femme' || matchUser?.gender === 'homme') && styles.myMessageText]}>
+            {item.content}
+          </Text>
+          <Text style={[styles.messageTime, (item.is_mine || matchUser?.gender === 'femme' || matchUser?.gender === 'homme') && styles.myMessageTime]}>
+            {formatTime(item.timestamp)}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   if (isLoading) {
     return (

@@ -181,6 +181,16 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
   },
+  gradientTitleContainer: {
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+  },
+  gradientTitleText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

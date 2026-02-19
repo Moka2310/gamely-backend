@@ -64,6 +64,7 @@ export const CONSOLES = [
   { id: 'xbox', name: 'Xbox', color: COLORS.xbox, icon: 'logo-xbox' },
   { id: 'ps5', name: 'PlayStation 5', color: COLORS.playstation, icon: 'logo-playstation' },
   { id: 'pc', name: 'PC', color: COLORS.pc, icon: 'desktop-outline' },
+  { id: 'switch', name: 'Nintendo Switch', color: '#E60012', icon: 'game-controller-outline' },
 ];
 
 export const LOOKING_FOR_OPTIONS = [

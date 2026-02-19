@@ -144,7 +144,7 @@ export default function MatchesScreen() {
 
       {matches.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Ionicons name="heart-outline" size={80} color={COLORS.textMuted} />
+          <Ionicons name="game-controller-outline" size={80} color={COLORS.textMuted} />
           <Text style={styles.emptyTitle}>Pas encore de match</Text>
           <Text style={styles.emptySubtitle}>Continue à swiper pour trouver des gamers!</Text>
           <TouchableOpacity

@@ -198,6 +198,13 @@ def is_profile_complete(user: dict) -> bool:
     required = ['age', 'gender', 'country', 'console', 'photo']
     return all(user.get(field) for field in required)
 
+# ===================== HEALTH CHECK =====================
+
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint for monitoring services like UptimeRobot"""
+    return {"status": "healthy", "service": "gamly-backend", "timestamp": datetime.utcnow().isoformat()}
+
 # ===================== AUTH ENDPOINTS =====================
 
 @api_router.post("/auth/register")

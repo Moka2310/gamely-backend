@@ -1,26 +1,27 @@
 {
   "expo": {
-    "name": "GamerSwipe",
-    "slug": "gamerswipe",
+    "name": "Gamely",
+    "slug": "gamely",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "gamerswipe",
+    "scheme": "gamely",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.gamely.app",
       "infoPlist": {
         "NSCameraUsageDescription": "Pour prendre ta photo de profil",
         "NSPhotoLibraryUsageDescription": "Pour choisir ta photo de profil"
       }
     },
     "android": {
+      "package": "com.gamely.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0A0A0F"
       },
-      "edgeToEdgeEnabled": true,
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
@@ -54,6 +55,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
+      }
     }
   }
 }

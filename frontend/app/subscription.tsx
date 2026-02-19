@@ -92,37 +92,12 @@ export default function SubscriptionScreen() {
   };
 
   const handleRestorePurchases = async () => {
-    if (!isIAPAvailable || !InAppPurchases) {
-      Alert.alert('Non disponible', 'La restauration des achats n\'est disponible que sur l\'application mobile.');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const { responseCode, results } = await InAppPurchases.getPurchaseHistoryAsync();
-      if (responseCode === InAppPurchases.IAPResponseCode.OK && results && results.length > 0) {
-        // Check if user has an active subscription
-        const hasActiveSubscription = results.some(
-          (purchase: any) => purchase.productId === PREMIUM_PRODUCT_ID
-        );
-        
-        if (hasActiveSubscription) {
-          await subscriptionAPI.upgrade();
-          await loadSubscription();
-          updateUser({ is_premium: true });
-          Alert.alert('Succès', 'Votre abonnement Premium a été restauré!');
-        } else {
-          Alert.alert('Aucun achat', 'Aucun abonnement Premium trouvé à restaurer.');
-        }
-      } else {
-        Alert.alert('Aucun achat', 'Aucun achat trouvé à restaurer.');
-      }
-    } catch (error) {
-      console.error('Restore error:', error);
-      Alert.alert('Erreur', 'Impossible de restaurer les achats.');
-    } finally {
-      setIsLoading(false);
-    }
+    // Demo mode - restore not available
+    Alert.alert(
+      'Restaurer les achats',
+      'Cette fonctionnalité sera disponible dans la version finale avec les achats intégrés.',
+      [{ text: 'OK' }]
+    );
   };
 
   if (isLoading) {
@@ -135,7 +110,7 @@ export default function SubscriptionScreen() {
     );
   }
 
-  const displayPrice = products.length > 0 ? products[0].price : '7,99 $';
+  const displayPrice = '7,99 $';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -283,11 +258,9 @@ export default function SubscriptionScreen() {
           <Text style={styles.disclaimer}>
             L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours.
           </Text>
-          {!isIAPAvailable && (
-            <Text style={[styles.disclaimer, styles.demoNote]}>
-              ⚠️ Mode démo - Les paiements réels sont disponibles uniquement sur l'application mobile publiée.
-            </Text>
-          )}
+          <Text style={[styles.disclaimer, styles.demoNote]}>
+            ⚠️ Mode démo - Les paiements réels seront disponibles après publication sur les stores.
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

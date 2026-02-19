@@ -259,7 +259,7 @@ export default function SubscriptionScreen() {
           <Text style={styles.statusSubtitle}>
             {subscription?.is_premium
               ? 'Swipes illimités!'
-              : `${subscription?.swipes_remaining || 0}/5 swipes restants aujourd'hui`}
+              : `${subscription?.swipes_remaining || 0}/3 swipes restants aujourd'hui`}
           </Text>
         </View>
 

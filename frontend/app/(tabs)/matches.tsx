@@ -145,9 +145,9 @@ export default function MatchesScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mes Matchs</Text>
+        <GradientTitle>Mes Matchs</GradientTitle>
         <View style={styles.matchCount}>
-          <Ionicons name="heart" size={16} color={COLORS.match} />
+          <Ionicons name="people" size={16} color={COLORS.blue} />
           <Text style={styles.matchCountText}>{matches.length}</Text>
         </View>
       </View>

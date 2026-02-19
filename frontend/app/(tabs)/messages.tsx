@@ -138,7 +138,7 @@ export default function MessagesScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Messages</Text>
+        <GradientTitle>Messages</GradientTitle>
       </View>
 
       {matches.length === 0 ? (

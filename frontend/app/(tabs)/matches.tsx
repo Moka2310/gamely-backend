@@ -14,27 +14,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import MaskedView from '@react-native-masked-view/masked-view';
 import { COLORS, SPACING, CONSOLES } from '../../src/constants/theme';
 import { matchesAPI } from '../../src/services/api';
 
-// Gradient Title with Halo effect
+// Gradient Title with Halo effect - Simple approach that works everywhere
 const GradientTitle = ({ children }: { children: string }) => (
   <View style={styles.gradientTitleWrapper}>
-    {/* Halo/Glow effect behind text */}
+    {/* Halo/Glow effect */}
     <Text style={styles.titleHalo}>{children}</Text>
-    {/* Gradient text using MaskedView */}
-    <MaskedView
-      maskElement={<Text style={styles.titleMask}>{children}</Text>}
-    >
-      <LinearGradient
-        colors={[COLORS.pink, COLORS.blue]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      >
-        <Text style={[styles.titleMask, { opacity: 0 }]}>{children}</Text>
-      </LinearGradient>
-    </MaskedView>
+    <Text style={styles.titleHalo2}>{children}</Text>
+    {/* Main gradient-like text using two colors */}
+    <Text style={styles.gradientTitleText}>{children}</Text>
   </View>
 );
 

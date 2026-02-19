@@ -478,7 +478,7 @@ async def swipe(swipe_data: SwipeCreate, current_user: dict = Depends(get_curren
         )
         current_user["swipes_today"] = 0
     
-    # Check swipe limit (5 free swipes per day)
+    # Check swipe limit (3 free swipes per day)
     if not current_user.get("is_premium", False):
         if current_user.get("swipes_today", 0) >= 5:
             raise HTTPException(

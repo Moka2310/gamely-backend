@@ -140,7 +140,7 @@ export default function ProfileScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Mon Profil</Text>
+          <GradientTitle>Mon Profil</GradientTitle>
           <TouchableOpacity onPress={() => router.push('/edit-profile')}>
             <Ionicons name="create-outline" size={24} color={COLORS.blue} />
           </TouchableOpacity>

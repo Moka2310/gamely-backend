@@ -562,7 +562,7 @@ async def swipe(swipe_data: SwipeCreate, current_user: dict = Depends(get_curren
     
     # Get remaining swipes
     updated_user = await db.users.find_one({"_id": current_user["_id"]})
-    swipes_remaining = max(0, 5 - updated_user.get("swipes_today", 0)) if not updated_user.get("is_premium") else -1
+    swipes_remaining = max(0, 3 - updated_user.get("swipes_today", 0)) if not updated_user.get("is_premium") else -1
     
     return {
         "success": True,

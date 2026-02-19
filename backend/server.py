@@ -693,6 +693,35 @@ async def send_message(match_id: str, message: MessageCreate, current_user: dict
     """Send a message in a match"""
     user_id = str(current_user["_id"])
     
+    # Check for banned words
+    if contains_banned_words(message.content):
+        # Increment violation count
+        violation_count = await increment_violation_count(user_id)
+        
+        # Log the violation
+        await db.violations.insert_one({
+            "user_id": user_id,
+            "type": "banned_words",
+            "content": message.content,
+            "timestamp": datetime.utcnow()
+        })
+        
+        # If 3+ violations, ban the account
+        if violation_count >= 3:
+            await db.users.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$set": {"is_banned": True, "banned_at": datetime.utcnow()}}
+            )
+            raise HTTPException(
+                status_code=403, 
+                detail="Votre compte a été suspendu pour comportement inapproprié répété. Contactez le support pour plus d'informations."
+            )
+        
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Message bloqué: contenu inapproprié détecté. Attention: {3 - violation_count} avertissement(s) restant(s) avant suspension du compte."
+        )
+    
     # Verify user is part of this match
     match = await db.matches.find_one({"_id": ObjectId(match_id)})
     if not match:

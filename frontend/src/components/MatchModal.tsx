@@ -114,6 +114,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  iconContainer: {
+    marginBottom: 16,
+  },
   heartSmall: {
     marginLeft: -10,
     marginTop: -20,

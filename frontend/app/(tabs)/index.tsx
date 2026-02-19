@@ -194,14 +194,13 @@ export default function DiscoverScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Ionicons name="game-controller" size={28} color={COLORS.pink} />
-          <Text style={styles.headerTitle}>Gamly</Text>
+          <Image source={{ uri: GAMLY_LOGO }} style={styles.headerLogo} resizeMode="contain" />
         </View>
         <View style={styles.headerRight}>
           {!isPremium && (
             <View style={styles.swipeCounter}>
               <Ionicons name="flame" size={16} color={COLORS.blue} />
-              <Text style={styles.swipeCounterText}>{swipesRemaining}/5</Text>
+              <Text style={styles.swipeCounterText}>{swipesRemaining}/3</Text>
             </View>
           )}
           <TouchableOpacity 

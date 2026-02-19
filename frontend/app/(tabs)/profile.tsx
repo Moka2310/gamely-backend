@@ -12,10 +12,25 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import { COLORS, SPACING, CONSOLES, LOOKING_FOR_OPTIONS } from '../../src/constants/theme';
 import { useAuthStore } from '../../src/stores/authStore';
 import { profileAPI, subscriptionAPI, authAPI } from '../../src/services/api';
+
+// Gradient Button Component
+const GradientButton = ({ onPress, children, style }: any) => (
+  <TouchableOpacity onPress={onPress} style={style}>
+    <LinearGradient
+      colors={[COLORS.pink, COLORS.blue]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      style={styles.gradientButton}
+    >
+      {children}
+    </LinearGradient>
+  </TouchableOpacity>
+);
 
 export default function ProfileScreen() {
   const { user, updateUser, logout } = useAuthStore();
@@ -115,17 +130,26 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Profile Photo */}
+        {/* Profile Photo with Halo Gradient */}
         <View style={styles.photoSection}>
           <TouchableOpacity onPress={handleUpdatePhoto} disabled={isLoading}>
             <View style={styles.photoContainer}>
-              {user.photo ? (
-                <Image source={{ uri: user.photo }} style={styles.photo} />
-              ) : (
-                <View style={[styles.photo, styles.noPhoto]}>
-                  <Ionicons name="person" size={50} color={COLORS.textMuted} />
-                </View>
-              )}
+              {/* Halo Gradient Ring */}
+              <LinearGradient
+                colors={[COLORS.pink, COLORS.blue, COLORS.pink]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.haloGradient}
+              />
+              <View style={styles.photoInnerContainer}>
+                {user.photo ? (
+                  <Image source={{ uri: user.photo }} style={styles.photo} />
+                ) : (
+                  <View style={[styles.photo, styles.noPhoto]}>
+                    <Ionicons name="person" size={50} color={COLORS.textMuted} />
+                  </View>
+                )}
+              </View>
               <View style={styles.editPhotoButton}>
                 {isLoading ? (
                   <ActivityIndicator size="small" color="white" />
@@ -258,25 +282,19 @@ export default function ProfileScreen() {
           </View>
         )}
 
-        {/* Actions */}
+        {/* Actions with Gradient Buttons */}
         <View style={styles.actionsSection}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => router.push('/subscription')}
-          >
-            <Ionicons name="star-outline" size={24} color={COLORS.warning} />
-            <Text style={styles.actionButtonText}>Abonnement Premium</Text>
-            <Ionicons name="chevron-forward" size={20} color={COLORS.textMuted} />
-          </TouchableOpacity>
+          <GradientButton onPress={() => router.push('/subscription')}>
+            <Ionicons name="star" size={20} color="white" />
+            <Text style={styles.gradientButtonText}>Abonnement Premium</Text>
+            <Ionicons name="chevron-forward" size={20} color="white" />
+          </GradientButton>
 
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => router.push('/edit-profile')}
-          >
-            <Ionicons name="create-outline" size={24} color={COLORS.blue} />
-            <Text style={styles.actionButtonText}>Modifier le profil</Text>
-            <Ionicons name="chevron-forward" size={20} color={COLORS.textMuted} />
-          </TouchableOpacity>
+          <GradientButton onPress={() => router.push('/edit-profile')}>
+            <Ionicons name="create" size={20} color="white" />
+            <Text style={styles.gradientButtonText}>Modifier le profil</Text>
+            <Ionicons name="chevron-forward" size={20} color="white" />
+          </GradientButton>
 
           <TouchableOpacity
             style={[styles.actionButton, styles.logoutButton]}
@@ -319,13 +337,30 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     position: 'relative',
+    width: 134,
+    height: 134,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  haloGradient: {
+    position: 'absolute',
+    width: 134,
+    height: 134,
+    borderRadius: 67,
+  },
+  photoInnerContainer: {
+    width: 124,
+    height: 124,
+    borderRadius: 62,
+    backgroundColor: COLORS.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 2,
   },
   photo: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    borderWidth: 3,
-    borderColor: COLORS.pink,
   },
   noPhoto: {
     backgroundColor: COLORS.card,
@@ -443,6 +478,19 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
     gap: SPACING.sm,
     marginTop: SPACING.lg,
+  },
+  gradientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: SPACING.md,
+    borderRadius: 12,
+    gap: SPACING.md,
+  },
+  gradientButtonText: {
+    flex: 1,
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600',
   },
   actionButton: {
     flexDirection: 'row',

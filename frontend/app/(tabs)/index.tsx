@@ -25,7 +25,7 @@ import SwipeCard from '../../src/components/SwipeCard';
 import MatchModal from '../../src/components/MatchModal';
 
 const { width } = Dimensions.get('window');
-const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/h526s4vt_1000701744.png';
+const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/wocpz9ef_Sans%20fond.png';
 
 interface Profile {
   id: string;

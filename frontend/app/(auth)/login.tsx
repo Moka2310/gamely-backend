@@ -18,7 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING } from '../../src/constants/theme';
 import { useAuthStore } from '../../src/stores/authStore';
 
-const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/h526s4vt_1000701744.png';
+const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/wocpz9ef_Sans%20fond.png';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');

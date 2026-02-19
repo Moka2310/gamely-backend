@@ -11,10 +11,12 @@ import {
   ScrollView,
   FlatList,
   TextInput,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Swiper from 'react-native-deck-swiper';
 import { COLORS, SPACING, COUNTRIES, LANGUAGES, GENDERS } from '../../src/constants/theme';
 import { discoverAPI, subscriptionAPI } from '../../src/services/api';
@@ -23,6 +25,7 @@ import SwipeCard from '../../src/components/SwipeCard';
 import MatchModal from '../../src/components/MatchModal';
 
 const { width } = Dimensions.get('window');
+const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/86ph0jvd_file_00000000911871fdb74054e6aaf43d85%20%281%29.png';
 
 interface Profile {
   id: string;

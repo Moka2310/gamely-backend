@@ -184,6 +184,24 @@ const styles = StyleSheet.create({
   gradientTitleWrapper: {
     position: 'relative',
   },
+  titleHaloPink: {
+    position: 'absolute',
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.pink,
+    opacity: 0.6,
+    left: -2,
+    top: -1,
+  },
+  titleHaloBlue: {
+    position: 'absolute',
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.blue,
+    opacity: 0.6,
+    left: 2,
+    top: 1,
+  },
   titleHalo: {
     position: 'absolute',
     fontSize: 28,
@@ -206,7 +224,7 @@ const styles = StyleSheet.create({
   gradientTitleText: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: COLORS.pink,
+    color: 'white',
   },
   gradientTitleContainer: {
     borderRadius: 8,

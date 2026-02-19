@@ -180,6 +180,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.text,
   },
+  headerTitleMask: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

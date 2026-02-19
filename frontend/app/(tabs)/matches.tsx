@@ -17,13 +17,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, CONSOLES } from '../../src/constants/theme';
 import { matchesAPI } from '../../src/services/api';
 
-// Gradient Title with Halo effect - Simple approach that works everywhere
+// Gradient Title with Halo effect - White text with gradient halo
 const GradientTitle = ({ children }: { children: string }) => (
   <View style={styles.gradientTitleWrapper}>
-    {/* Halo/Glow effect */}
-    <Text style={styles.titleHalo}>{children}</Text>
-    <Text style={styles.titleHalo2}>{children}</Text>
-    {/* Main gradient-like text using two colors */}
+    {/* Pink halo layer */}
+    <Text style={styles.titleHaloPink}>{children}</Text>
+    {/* Blue halo layer */}
+    <Text style={styles.titleHaloBlue}>{children}</Text>
+    {/* Main white text */}
     <Text style={styles.gradientTitleText}>{children}</Text>
   </View>
 );

@@ -211,6 +211,23 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
   },
+  gradientTitleWrapper: {
+    position: 'relative',
+  },
+  titleHalo: {
+    position: 'absolute',
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.pink,
+    opacity: 0.3,
+    textShadowColor: COLORS.pink,
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 15,
+  },
+  titleMask: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
   gradientTitleContainer: {
     borderRadius: 8,
     paddingHorizontal: 12,

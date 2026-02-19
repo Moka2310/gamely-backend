@@ -16,69 +16,18 @@ import { COLORS, SPACING } from '../src/constants/theme';
 import { subscriptionAPI } from '../src/services/api';
 import { useAuthStore } from '../src/stores/authStore';
 
-// Product ID for premium subscription (configure in App Store Connect / Google Play Console)
-const PREMIUM_PRODUCT_ID = 'gamly_premium_weekly';
+// Note: In-App Purchases will be implemented with react-native-iap after initial build
+// For now, we use demo mode for all platforms
 
 export default function SubscriptionScreen() {
   const { updateUser } = useAuthStore();
   const [subscription, setSubscription] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpgrading, setIsUpgrading] = useState(false);
-  const [isIAPAvailable, setIsIAPAvailable] = useState(false);
-  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
-    initializeIAP();
     loadSubscription();
-    
-    return () => {
-      // Cleanup IAP listener
-      if (InAppPurchases && Platform.OS !== 'web') {
-        InAppPurchases.disconnectAsync().catch(() => {});
-      }
-    };
   }, []);
-
-  const initializeIAP = async () => {
-    // Skip IAP on web
-    if (Platform.OS === 'web' || !InAppPurchases) {
-      setIsIAPAvailable(false);
-      return;
-    }
-
-    try {
-      // Connect to the store
-      await InAppPurchases.connectAsync();
-      setIsIAPAvailable(true);
-
-      // Set up purchase listener
-      InAppPurchases.setPurchaseListener(({ responseCode, results, errorCode }: any) => {
-        if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-          results?.forEach(async (purchase: any) => {
-            if (!purchase.acknowledged) {
-              // Verify and acknowledge the purchase
-              await handlePurchaseComplete(purchase);
-            }
-          });
-        } else if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
-          console.log('User cancelled the purchase');
-        } else {
-          console.error('Purchase error:', errorCode);
-          Alert.alert('Erreur', "Le paiement a échoué. Veuillez réessayer.");
-        }
-        setIsUpgrading(false);
-      });
-
-      // Load available products
-      const { responseCode, results } = await InAppPurchases.getProductsAsync([PREMIUM_PRODUCT_ID]);
-      if (responseCode === InAppPurchases.IAPResponseCode.OK && results) {
-        setProducts(results);
-      }
-    } catch (error) {
-      console.log('IAP not available:', error);
-      setIsIAPAvailable(false);
-    }
-  };
 
   const loadSubscription = async () => {
     try {
@@ -91,69 +40,31 @@ export default function SubscriptionScreen() {
     }
   };
 
-  const handlePurchaseComplete = async (purchase: any) => {
-    try {
-      // Finish the transaction
-      if (InAppPurchases) {
-        await InAppPurchases.finishTransactionAsync(purchase, true);
-      }
-      
-      // Update backend
-      await subscriptionAPI.upgrade();
-      await loadSubscription();
-      updateUser({ is_premium: true });
-      
-      Alert.alert(
-        '🎉 Félicitations!',
-        'Vous êtes maintenant Premium! Profitez de swipes illimités!',
-        [{ text: 'Super!', style: 'default' }]
-      );
-    } catch (error) {
-      console.error('Error completing purchase:', error);
-      Alert.alert('Erreur', "Impossible de finaliser l'achat. Contactez le support.");
-    }
-  };
-
   const handleUpgrade = async () => {
-    if (isIAPAvailable && products.length > 0 && InAppPurchases) {
-      // Real In-App Purchase
-      setIsUpgrading(true);
-      try {
-        await InAppPurchases.purchaseItemAsync(PREMIUM_PRODUCT_ID);
-        // The purchase listener will handle the result
-      } catch (error) {
-        console.error('Purchase error:', error);
-        setIsUpgrading(false);
-        Alert.alert('Erreur', "Impossible d'initier l'achat");
-      }
-    } else {
-      // Demo mode (web or simulator)
-      Alert.alert(
-        'Devenir Premium',
-        Platform.OS === 'web' 
-          ? 'Le paiement par carte est disponible uniquement sur l\'application mobile (iOS/Android).\n\nVoulez-vous simuler l\'achat pour tester?'
-          : 'Les achats intégrés ne sont pas disponibles sur ce simulateur.\n\nVoulez-vous simuler l\'achat?',
-        [
-          { text: 'Annuler', style: 'cancel' },
-          {
-            text: 'Simuler l\'achat',
-            onPress: async () => {
-              setIsUpgrading(true);
-              try {
-                await subscriptionAPI.upgrade();
-                await loadSubscription();
-                updateUser({ is_premium: true });
-                Alert.alert('🎉 Félicitations!', 'Vous êtes maintenant Premium!');
-              } catch (error) {
-                Alert.alert('Erreur', "Impossible de mettre à niveau");
-              } finally {
-                setIsUpgrading(false);
-              }
-            },
+    // Demo mode - simulates purchase for testing
+    Alert.alert(
+      'Devenir Premium',
+      'Le paiement intégré sera disponible dans la version finale de l\'app.\n\nVoulez-vous simuler l\'achat pour tester?',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Simuler l\'achat',
+          onPress: async () => {
+            setIsUpgrading(true);
+            try {
+              await subscriptionAPI.upgrade();
+              await loadSubscription();
+              updateUser({ is_premium: true });
+              Alert.alert('🎉 Félicitations!', 'Vous êtes maintenant Premium!');
+            } catch (error) {
+              Alert.alert('Erreur', "Impossible de mettre à niveau");
+            } finally {
+              setIsUpgrading(false);
+            }
           },
-        ]
-      );
-    }
+        },
+      ]
+    );
   };
 
   const handleCancel = async () => {

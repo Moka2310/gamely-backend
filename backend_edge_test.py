@@ -7,7 +7,7 @@ Tests error scenarios and edge cases
 import requests
 import json
 
-BASE_URL = "https://gamermatch-5.preview.emergentagent.com/api"
+BASE_URL = "https://gamly-staging.preview.emergentagent.com/api"
 
 def test_edge_cases():
     print("🔍 Testing Edge Cases and Error Scenarios")

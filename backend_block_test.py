@@ -6,7 +6,7 @@ Test Block User API functionality
 import requests
 import json
 
-BASE_URL = "https://gamermatch-5.preview.emergentagent.com/api"
+BASE_URL = "https://gamly-staging.preview.emergentagent.com/api"
 
 def test_block_functionality():
     print("🚫 Testing Block User Functionality")

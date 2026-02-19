@@ -275,7 +275,7 @@ export default function SubscriptionScreen() {
           
           <View style={styles.featureRow}>
             <Text style={styles.featureName}>Swipes par jour</Text>
-            <Text style={styles.featureFree}>5</Text>
+            <Text style={styles.featureFree}>3</Text>
             <Text style={styles.featurePremium}>∞</Text>
           </View>
           

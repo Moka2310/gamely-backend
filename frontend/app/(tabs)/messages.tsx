@@ -186,24 +186,29 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: COLORS.pink,
+    opacity: 0.4,
+  },
+  titleHalo2: {
+    position: 'absolute',
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.blue,
     opacity: 0.3,
-    textShadowColor: COLORS.pink,
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 15,
+    left: 2,
   },
   titleMask: {
     fontSize: 28,
     fontWeight: 'bold',
   },
+  gradientTitleText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.pink,
+  },
   gradientTitleContainer: {
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 4,
-  },
-  gradientTitleText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: 'white',
   },
   loadingContainer: {
     flex: 1,

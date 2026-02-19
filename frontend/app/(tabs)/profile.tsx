@@ -21,14 +21,7 @@ import { profileAPI, subscriptionAPI, authAPI } from '../../src/services/api';
 
 // Gradient Title with Halo effect - White text with gradient halo
 const GradientTitle = ({ children }: { children: string }) => (
-  <View style={styles.gradientTitleWrapper}>
-    {/* Pink halo layer */}
-    <Text style={styles.titleHaloPink}>{children}</Text>
-    {/* Blue halo layer */}
-    <Text style={styles.titleHaloBlue}>{children}</Text>
-    {/* Main white text */}
-    <Text style={styles.gradientTitleText}>{children}</Text>
-  </View>
+  <Text style={styles.gradientTitleText}>{children}</Text>
 );
 
 // Gradient Button Component

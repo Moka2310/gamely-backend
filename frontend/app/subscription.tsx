@@ -230,7 +230,7 @@ export default function SubscriptionScreen() {
     );
   }
 
-  const displayPrice = products.length > 0 ? products[0].price : '5,00 $';
+  const displayPrice = products.length > 0 ? products[0].price : '7,99 $';
 
   return (
     <SafeAreaView style={styles.container}>

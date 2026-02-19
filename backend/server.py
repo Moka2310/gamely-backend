@@ -764,7 +764,7 @@ async def get_subscription(current_user: dict = Depends(get_current_user)):
     return {
         "type": "premium" if is_premium else "free",
         "swipes_today": swipes_today,
-        "swipes_remaining": -1 if is_premium else max(0, 5 - swipes_today),
+        "swipes_remaining": -1 if is_premium else max(0, 3 - swipes_today),
         "max_daily_swipes": max_swipes,
         "is_premium": is_premium,
         "price_weekly": 5.00,

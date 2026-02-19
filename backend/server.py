@@ -27,6 +27,38 @@ SECRET_KEY = os.environ.get('JWT_SECRET', 'gamerswipe-secret-key-2024')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 24 * 7  # 7 days
 
+# Banned words filter (French + English profanity)
+BANNED_WORDS = [
+    # French profanity
+    "putain", "merde", "connard", "connasse", "salope", "salaud", "enculé", "nique", 
+    "niquer", "batard", "bâtard", "fdp", "ntm", "pd", "pédé", "tapette", "gouine",
+    "enfoiré", "pute", "bordel", "couille", "bite", "chier", "encule", "cul",
+    # English profanity
+    "fuck", "shit", "bitch", "ass", "asshole", "dick", "pussy", "cock", "cunt",
+    "nigger", "nigga", "fag", "faggot", "retard", "whore", "slut", "bastard",
+    # Insults and threats
+    "suicide", "kill yourself", "die", "crève", "mort", "tuer", "rape", "viol"
+]
+
+def contains_banned_words(text: str) -> bool:
+    """Check if text contains any banned words"""
+    if not text:
+        return False
+    text_lower = text.lower()
+    for word in BANNED_WORDS:
+        if word in text_lower:
+            return True
+    return False
+
+async def increment_violation_count(user_id: str) -> int:
+    """Increment violation count and return new count"""
+    result = await db.users.find_one_and_update(
+        {"_id": ObjectId(user_id)},
+        {"$inc": {"violation_count": 1}},
+        return_document=True
+    )
+    return result.get("violation_count", 1) if result else 1
+
 # Create the main app
 app = FastAPI(title="GamerSwipe API")
 

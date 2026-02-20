@@ -104,6 +104,44 @@ export default function ProfileScreen() {
     );
   };
 
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Supprimer mon compte',
+      'Êtes-vous sûr de vouloir supprimer définitivement votre compte?\n\nCette action est IRRÉVERSIBLE. Toutes vos données, matchs et messages seront supprimés.',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Supprimer',
+          style: 'destructive',
+          onPress: () => {
+            // Double confirmation
+            Alert.alert(
+              'Confirmation finale',
+              'Tapez "SUPPRIMER" pour confirmer la suppression de votre compte.',
+              [
+                { text: 'Annuler', style: 'cancel' },
+                {
+                  text: 'Oui, supprimer mon compte',
+                  style: 'destructive',
+                  onPress: async () => {
+                    try {
+                      await authAPI.deleteAccount();
+                      await logout();
+                      Alert.alert('Compte supprimé', 'Votre compte a été supprimé avec succès.');
+                      router.replace('/(auth)/login');
+                    } catch (error) {
+                      Alert.alert('Erreur', 'Impossible de supprimer le compte. Réessayez plus tard.');
+                    }
+                  },
+                },
+              ]
+            );
+          },
+        },
+      ]
+    );
+  };
+
   const getConsoleInfo = () => {
     return CONSOLES.find(c => c.id === user?.console);
   };

@@ -542,6 +542,7 @@ export default function DiscoverScreen() {
         </View>
       </Modal>
     </SafeAreaView>
+    </View>
     </ImageBackground>
   );
 }
@@ -551,6 +552,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(10, 10, 15, 0.7)',
   },
   container: {
     flex: 1,

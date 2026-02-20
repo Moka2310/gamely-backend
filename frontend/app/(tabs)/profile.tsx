@@ -575,4 +575,10 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginTop: SPACING.md,
   },
+  deleteButton: {
+    marginTop: SPACING.sm,
+    borderWidth: 1,
+    borderColor: COLORS.error,
+    backgroundColor: 'transparent',
+  },
 });

@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
   Alert,
   Image,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, router } from 'expo-router';
@@ -20,7 +19,6 @@ import { COLORS, SPACING } from '../../src/constants/theme';
 import { useAuthStore } from '../../src/stores/authStore';
 
 const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/wocpz9ef_Sans%20fond.png';
-const BACKGROUND_IMAGE = require('../../assets/images/background.png');
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');

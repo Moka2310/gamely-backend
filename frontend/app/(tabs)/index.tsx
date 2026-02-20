@@ -183,17 +183,20 @@ export default function DiscoverScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.pink} />
-          <Text style={styles.loadingText}>Chargement des profils...</Text>
-        </View>
-      </SafeAreaView>
+      <ImageBackground source={BACKGROUND_IMAGE} style={styles.backgroundImage} resizeMode="cover">
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.pink} />
+            <Text style={styles.loadingText}>Chargement des profils...</Text>
+          </View>
+        </SafeAreaView>
+      </ImageBackground>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={BACKGROUND_IMAGE} style={styles.backgroundImage} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       {/* Header with Large Logo and Halo */}
       <View style={styles.header}>
         <View style={styles.headerLogoContainer}>

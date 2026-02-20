@@ -127,57 +127,66 @@ export default function MatchesScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
-      </SafeAreaView>
+      <ImageBackground source={BACKGROUND_IMAGE} style={styles.backgroundImage} resizeMode="cover">
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        </SafeAreaView>
+      </ImageBackground>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <GradientTitle>Mes Matchs</GradientTitle>
-        <View style={styles.matchCount}>
-          <Ionicons name="people" size={16} color={COLORS.blue} />
-          <Text style={styles.matchCountText}>{matches.length}</Text>
+    <ImageBackground source={BACKGROUND_IMAGE} style={styles.backgroundImage} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <GradientTitle>Mes Matchs</GradientTitle>
+          <View style={styles.matchCount}>
+            <Ionicons name="people" size={16} color={COLORS.blue} />
+            <Text style={styles.matchCountText}>{matches.length}</Text>
+          </View>
         </View>
-      </View>
 
-      {matches.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="game-controller-outline" size={80} color={COLORS.textMuted} />
-          <Text style={styles.emptyTitle}>Pas encore de match</Text>
-          <Text style={styles.emptySubtitle}>Continue à swiper pour trouver des gamers!</Text>
-          <TouchableOpacity
-            style={styles.discoverButton}
-            onPress={() => router.push('/(tabs)')}
-          >
-            <Ionicons name="game-controller" size={20} color="white" />
-            <Text style={styles.discoverButtonText}>Découvrir</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <FlatList
-          data={matches}
-          renderItem={renderMatch}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={COLORS.primary}
-            />
-          }
-        />
-      )}
-    </SafeAreaView>
+        {matches.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="game-controller-outline" size={80} color={COLORS.textMuted} />
+            <Text style={styles.emptyTitle}>Pas encore de match</Text>
+            <Text style={styles.emptySubtitle}>Continue à swiper pour trouver des gamers!</Text>
+            <TouchableOpacity
+              style={styles.discoverButton}
+              onPress={() => router.push('/(tabs)')}
+            >
+              <Ionicons name="game-controller" size={20} color="white" />
+              <Text style={styles.discoverButtonText}>Découvrir</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <FlatList
+            data={matches}
+            renderItem={renderMatch}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={COLORS.primary}
+              />
+            }
+          />
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.background,

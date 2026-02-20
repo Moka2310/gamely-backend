@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -16,6 +17,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING } from '../../src/constants/theme';
 import { matchesAPI } from '../../src/services/api';
+
+const BACKGROUND_IMAGE = require('../../assets/images/background.png');
 
 // Gradient Title with Halo effect - White text with gradient halo
 const GradientTitle = ({ children }: { children: string }) => (

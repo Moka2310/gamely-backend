@@ -12,6 +12,7 @@ import {
   FlatList,
   TextInput,
   Image,
+  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -23,6 +24,8 @@ import { discoverAPI, subscriptionAPI } from '../../src/services/api';
 import { useAuthStore } from '../../src/stores/authStore';
 import SwipeCard from '../../src/components/SwipeCard';
 import MatchModal from '../../src/components/MatchModal';
+
+const BACKGROUND_IMAGE = require('../../assets/images/background.png');
 
 const { width } = Dimensions.get('window');
 const GAMLY_LOGO = 'https://customer-assets.emergentagent.com/job_427702e9-a7ed-42fa-8909-2fb145a92115/artifacts/wocpz9ef_Sans%20fond.png';

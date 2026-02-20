@@ -342,6 +342,34 @@ async def reset_password(data: PasswordResetConfirm):
     
     return {"message": "Mot de passe mis à jour avec succès!"}
 
+@api_router.delete("/auth/delete-account")
+async def delete_account(current_user: dict = Depends(get_current_user)):
+    """Delete user account and all associated data"""
+    user_id = current_user["_id"]
+    
+    # Delete all matches involving this user
+    await db.matches.delete_many({
+        "$or": [{"user1_id": str(user_id)}, {"user2_id": str(user_id)}]
+    })
+    
+    # Delete all messages involving this user
+    await db.messages.delete_many({
+        "$or": [{"sender_id": str(user_id)}, {"receiver_id": str(user_id)}]
+    })
+    
+    # Delete all swipes by this user
+    await db.swipes.delete_many({"swiper_id": str(user_id)})
+    
+    # Delete all swipes on this user
+    await db.swipes.delete_many({"swiped_id": str(user_id)})
+    
+    # Delete the user account
+    await db.users.delete_one({"_id": user_id})
+    
+    logger.info(f"User account deleted: {user_id}")
+    
+    return {"message": "Compte supprimé avec succès"}
+
 @api_router.get("/auth/me")
 async def get_me(current_user: dict = Depends(get_current_user)):
     return {

@@ -120,49 +120,58 @@ export default function MessagesScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
-      </SafeAreaView>
+      <ImageBackground source={BACKGROUND_IMAGE} style={styles.backgroundImage} resizeMode="cover">
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        </SafeAreaView>
+      </ImageBackground>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <GradientTitle>Messages</GradientTitle>
-      </View>
-
-      {matches.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="chatbubbles-outline" size={80} color={COLORS.textMuted} />
-          <Text style={styles.emptyTitle}>Pas de conversations</Text>
-          <Text style={styles.emptySubtitle}>Trouve des matchs pour commencer à discuter!</Text>
+    <ImageBackground source={BACKGROUND_IMAGE} style={styles.backgroundImage} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <GradientTitle>Messages</GradientTitle>
         </View>
-      ) : (
-        <FlatList
-          data={matches}
-          renderItem={renderConversation}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={COLORS.primary}
-            />
-          }
-        />
-      )}
-    </SafeAreaView>
+
+        {matches.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="chatbubbles-outline" size={80} color={COLORS.textMuted} />
+            <Text style={styles.emptyTitle}>Pas de conversations</Text>
+            <Text style={styles.emptySubtitle}>Trouve des matchs pour commencer à discuter!</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={matches}
+            renderItem={renderConversation}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={COLORS.primary}
+              />
+            }
+          />
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: 'transparent',
   },
   header: {
     paddingHorizontal: SPACING.lg,

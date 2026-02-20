@@ -200,12 +200,12 @@ export default function EditProfileScreen() {
           <View style={styles.chipsContainer}>
             {LANGUAGES.map((lang) => (
               <TouchableOpacity
-                key={lang}
-                style={[styles.chip, languages.includes(lang) && styles.chipActive]}
-                onPress={() => toggleLanguage(lang)}
+                key={lang.id}
+                style={[styles.chip, languages.includes(lang.id) && styles.chipActive]}
+                onPress={() => toggleLanguage(lang.id)}
               >
-                <Text style={[styles.chipText, languages.includes(lang) && styles.chipTextActive]}>
-                  {lang}
+                <Text style={[styles.chipText, languages.includes(lang.id) && styles.chipTextActive]}>
+                  {lang.flag} {lang.label}
                 </Text>
               </TouchableOpacity>
             ))}

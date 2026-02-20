@@ -347,6 +347,14 @@ export default function ProfileScreen() {
             <Ionicons name="log-out-outline" size={24} color={COLORS.error} />
             <Text style={[styles.actionButtonText, { color: COLORS.error }]}>Déconnexion</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.actionButton, styles.deleteButton]}
+            onPress={handleDeleteAccount}
+          >
+            <Ionicons name="trash-outline" size={24} color={COLORS.error} />
+            <Text style={[styles.actionButtonText, { color: COLORS.error }]}>Supprimer mon compte</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

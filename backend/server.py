@@ -206,6 +206,238 @@ async def health_check():
     """Health check endpoint for monitoring services like UptimeRobot"""
     return {"status": "healthy", "service": "gamly-backend", "timestamp": datetime.utcnow().isoformat()}
 
+# ===================== ACCOUNT DELETION PAGE =====================
+
+@api_router.get("/delete-account", response_class=HTMLResponse)
+async def delete_account_page():
+    """Web page for account deletion - required by Google Play"""
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Supprimer mon compte - GAMLY</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: linear-gradient(135deg, #0A0A0F 0%, #1a1a2e 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                color: white;
+            }
+            .container {
+                background: rgba(255,255,255,0.05);
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 500px;
+                width: 100%;
+                text-align: center;
+                border: 1px solid rgba(255,255,255,0.1);
+            }
+            .logo {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+                background: linear-gradient(90deg, #FF1493, #00BFFF);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            p {
+                color: #a0a0a0;
+                margin-bottom: 20px;
+                line-height: 1.6;
+            }
+            .warning {
+                background: rgba(255,0,0,0.1);
+                border: 1px solid rgba(255,0,0,0.3);
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            .warning-text {
+                color: #ff6b6b;
+                font-weight: 500;
+            }
+            .form-group {
+                margin-bottom: 15px;
+                text-align: left;
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+                color: #ccc;
+                font-size: 14px;
+            }
+            input {
+                width: 100%;
+                padding: 12px;
+                border-radius: 10px;
+                border: 1px solid rgba(255,255,255,0.2);
+                background: rgba(255,255,255,0.05);
+                color: white;
+                font-size: 16px;
+            }
+            input:focus {
+                outline: none;
+                border-color: #FF1493;
+            }
+            .btn {
+                width: 100%;
+                padding: 15px;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+            .btn-danger {
+                background: linear-gradient(90deg, #ff4444, #cc0000);
+                color: white;
+            }
+            .btn-danger:hover {
+                opacity: 0.9;
+            }
+            .success {
+                background: rgba(0,255,0,0.1);
+                border: 1px solid rgba(0,255,0,0.3);
+                border-radius: 10px;
+                padding: 20px;
+                color: #4ade80;
+                display: none;
+            }
+            .error {
+                background: rgba(255,0,0,0.1);
+                border: 1px solid rgba(255,0,0,0.3);
+                border-radius: 10px;
+                padding: 15px;
+                color: #ff6b6b;
+                margin-top: 15px;
+                display: none;
+            }
+            .steps {
+                text-align: left;
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            .steps h3 {
+                margin-bottom: 15px;
+                color: #ccc;
+            }
+            .steps ol {
+                padding-left: 20px;
+                color: #a0a0a0;
+            }
+            .steps li {
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">🎮</div>
+            <h1>Supprimer mon compte GAMLY</h1>
+            
+            <div id="form-container">
+                <p>Pour supprimer votre compte, veuillez vous connecter avec vos identifiants.</p>
+                
+                <div class="warning">
+                    <p class="warning-text">⚠️ Attention : Cette action est irréversible. Toutes vos données, matchs et messages seront définitivement supprimés.</p>
+                </div>
+                
+                <form id="delete-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" required placeholder="Votre mot de passe">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Supprimer mon compte</button>
+                </form>
+                
+                <div id="error-message" class="error"></div>
+            </div>
+            
+            <div id="success-message" class="success">
+                <h2>✅ Compte supprimé</h2>
+                <p>Votre compte a été supprimé avec succès. Toutes vos données ont été effacées.</p>
+            </div>
+            
+            <div class="steps">
+                <h3>Vous pouvez également supprimer votre compte depuis l'app :</h3>
+                <ol>
+                    <li>Ouvrez l'application GAMLY</li>
+                    <li>Allez dans l'onglet "Mon Profil"</li>
+                    <li>Faites défiler vers le bas</li>
+                    <li>Cliquez sur "Supprimer mon compte"</li>
+                </ol>
+            </div>
+        </div>
+        
+        <script>
+            document.getElementById('delete-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const errorDiv = document.getElementById('error-message');
+                const successDiv = document.getElementById('success-message');
+                const formContainer = document.getElementById('form-container');
+                
+                errorDiv.style.display = 'none';
+                
+                try {
+                    // First login to get token
+                    const loginResponse = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    
+                    if (!loginResponse.ok) {
+                        throw new Error('Email ou mot de passe incorrect');
+                    }
+                    
+                    const loginData = await loginResponse.json();
+                    
+                    // Delete account
+                    const deleteResponse = await fetch('/api/auth/delete-account', {
+                        method: 'DELETE',
+                        headers: { 
+                            'Authorization': `Bearer ${loginData.token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (!deleteResponse.ok) {
+                        throw new Error('Erreur lors de la suppression');
+                    }
+                    
+                    // Show success
+                    formContainer.style.display = 'none';
+                    successDiv.style.display = 'block';
+                    
+                } catch (error) {
+                    errorDiv.textContent = error.message;
+                    errorDiv.style.display = 'block';
+                }
+            });
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
 # ===================== AUTH ENDPOINTS =====================
 
 @api_router.post("/auth/register")
